@@ -1,0 +1,14 @@
+[
+    {
+        "president": {
+            "name": "Alain",
+            "country": "France"
+        }
+    },
+    {
+        "president": {
+            "name": "Juan",
+            "country": "Spain"
+        }
+    }
+]

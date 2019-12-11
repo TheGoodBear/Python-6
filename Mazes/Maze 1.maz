@@ -1,0 +1,37 @@
+# This test maze is the first one made for the Maze Python game
+
+# File name : Maze 1.maz
+# Associated JSON elements for this maze must be found in "<File name> Elements.json" file
+
+# Structure of JSON data :
+# For each element in maze :
+#    Name (string)              : friendly name
+#    Symbol (string)            : symbol used in .maz file
+#    Image (string)             : image used in game
+#    Behavior (list of strings) : behaviors of element when encoutered by player, possible values : 
+#        "walk"    : player can walk on it
+#        "block"   : player cannot pass it
+#        "pick"    : element can be picked up and put in backpack
+#        "combine" : element is part of victory (all combined elements must be found to open exit door)
+
+# Symbols used in map :
+#    space : floor
+#    *     : wall
+#    E     : entry
+#    X     : exit
+
+***************
+E *           *
+* * ** ** * ***
+*    ***  *   *
+* *****  **** *
+*     * **    *
+***** *  ** ***
+*      * *    *
+* **** * *** **
+*  **  *  *   *
+* * * ****  * *
+* * *  *  *  **
+* *  *  * * * X
+*    *  *     *
+***************

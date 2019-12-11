@@ -1,0 +1,15 @@
+Contexte 
+--------
+
+Améliorer le petit jeu de labyrinthe :
+
+1) Désérialiser la liste des éléments du labyrinthe dans la classe MazeElements
+2) Retirer tout le code de Main.py
+
+Consignes :
+- Tous les nommages (méthodes, propriétés, variables, classes, etc.) doivent être en anglais
+- Le code doit être commenté et aéré (lignes blanches)
+- L'application doit utiliser des fonctions (def)
+- Chaque action effectuée par l'application doit afficher un message explicite à l'utilisateur
+- Le programme principal ne doit contenir aucune fonction, seulement des appels à des classes statiques ou à des objets instanciés
+- Chaque fichier .py ne doit contenir qu'une seule classe

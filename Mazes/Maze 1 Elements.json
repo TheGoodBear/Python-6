@@ -1,0 +1,74 @@
+[
+    {
+        "Name": "Sol",
+        "Symbol": " ",
+        "Image": " ",
+        "Behavior": ["Walk"]
+    },
+    {
+        "Name": "Mur",
+        "Symbol": "*",
+        "Image": "▓",
+        "Behavior": ["Block"]
+    },
+    {
+        "Name": "Entrée",
+        "Symbol": "E",
+        "Image": "E",
+        "Behavior": ["Walk"]
+    },
+    {
+        "Name": "Sortie",
+        "Symbol": "X",
+        "Image": "+",
+        "Behavior": ["Block"]
+    },
+    {
+        "Name": "Statue de Dragon",
+        "Symbol": "",
+        "Image": "1",
+        "Behavior": ["Pick", "Combine"]
+    },
+    {
+        "Name": "Statue de Poisson",
+        "Symbol": "",
+        "Image": "2",
+        "Behavior": ["Pick", "Combine"]
+    },
+    {
+        "Name": "Statue d'Oiseau",
+        "Symbol": "",
+        "Image": "3",
+        "Behavior": ["Pick", "Combine"]
+    },
+    {
+        "Name": "Statue de Buffle",
+        "Symbol": "",
+        "Image": "4",
+        "Behavior": ["Pick", "Combine"]
+    },
+    {
+        "Name": "Miroir",
+        "Symbol": "",
+        "Image": "5",
+        "Behavior": ["Pick"]
+    },
+    {
+        "Name": "Clé dorée",
+        "Symbol": "",
+        "Image": "6",
+        "Behavior": ["Pick"]
+    },
+    {
+        "Name": "Clé argentée",
+        "Symbol": "",
+        "Image": "7",
+        "Behavior": ["Pick"]
+    },
+    {
+        "Name": "Bouteille",
+        "Symbol": "",
+        "Image": "8",
+        "Behavior": ["Pick"]
+    }
+]
