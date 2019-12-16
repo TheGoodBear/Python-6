@@ -8,6 +8,8 @@ class MazeElement:
         Instanciable
     """
 
+    Width: int = 0
+    Height: int = 0
 
     def __init__(self, Element):
         """

@@ -2,73 +2,73 @@
     {
         "Name": "Sol",
         "Symbol": " ",
-        "Image": " ",
+        "Image": [""],
         "Behavior": ["Walk"]
     },
     {
         "Name": "Mur",
         "Symbol": "*",
-        "Image": "▓",
+        "Image": ["Wall"],
         "Behavior": ["Block"]
     },
     {
         "Name": "Entrée",
         "Symbol": "E",
-        "Image": "E",
+        "Image": ["CaveIn"],
         "Behavior": ["Walk"]
     },
     {
         "Name": "Sortie",
         "Symbol": "X",
-        "Image": "+",
-        "Behavior": ["Block"]
+        "Image": ["DoorClosed", "DoorOpen"],
+        "Behavior": ["Block", "Open"]
     },
     {
         "Name": "Statue de Dragon",
         "Symbol": "",
-        "Image": "1",
+        "Image": ["Chest", "StatueDragon"],
         "Behavior": ["Pick", "Combine"]
     },
     {
         "Name": "Statue de Poisson",
         "Symbol": "",
-        "Image": "2",
+        "Image": ["Chest", "StatueFish"],
         "Behavior": ["Pick", "Combine"]
     },
     {
         "Name": "Statue d'Oiseau",
         "Symbol": "",
-        "Image": "3",
+        "Image": ["Chest", "StatueBird"],
         "Behavior": ["Pick", "Combine"]
     },
     {
-        "Name": "Statue de Buffle",
+        "Name": "Statue d'Éléphant'",
         "Symbol": "",
-        "Image": "4",
+        "Image": ["Chest", "StatueElephant"],
         "Behavior": ["Pick", "Combine"]
     },
     {
         "Name": "Miroir",
         "Symbol": "",
-        "Image": "5",
+        "Image": ["Chest", "Miror"],
         "Behavior": ["Pick"]
     },
     {
         "Name": "Clé dorée",
         "Symbol": "",
-        "Image": "6",
+        "Image": ["Chest", "KeyGold"],
         "Behavior": ["Pick"]
     },
     {
         "Name": "Clé argentée",
         "Symbol": "",
-        "Image": "7",
+        "Image": ["Chest", "KeySilver"],
         "Behavior": ["Pick"]
     },
     {
         "Name": "Bouteille",
         "Symbol": "",
-        "Image": "8",
+        "Image": ["Chest", "PotionBlue"],
         "Behavior": ["Pick"]
     }
 ]
