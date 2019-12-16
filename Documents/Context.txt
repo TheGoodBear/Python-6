@@ -3,13 +3,11 @@ Contexte
 
 Améliorer le petit jeu de labyrinthe :
 
-1) Désérialiser la liste des éléments du labyrinthe dans la classe MazeElements
-2) Retirer tout le code de Main.py
+1) Implémenter la librairie graphique PyGame (https://www.pygame.org)
 
 Consignes :
 - Tous les nommages (méthodes, propriétés, variables, classes, etc.) doivent être en anglais
 - Le code doit être commenté et aéré (lignes blanches)
-- L'application doit utiliser des fonctions (def)
-- Chaque action effectuée par l'application doit afficher un message explicite à l'utilisateur
-- Le programme principal ne doit contenir aucune fonction, seulement des appels à des classes statiques ou à des objets instanciés
+- L'application doit utiliser la Programmation Orientée Objet
+- Le programme principal ne doit contenir que l'appel à une méthode de lancement de l'application
 - Chaque fichier .py ne doit contenir qu'une seule classe

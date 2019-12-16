@@ -1,5 +1,5 @@
-from Models.Player import *
-from Models.MazeElement import *
+from Models.Player import Player
+from Models.MazeElement import MazeElement
 
 class Game:
     """
@@ -9,11 +9,10 @@ class Game:
         Static methods only
     """
 
-
     @staticmethod
-    def StartApplication():
+    def Initialize():
         """ 
-            Initialize application and show initial message
+            Initialize game and show initial message
         """
 
         # 1) Interact with player
@@ -30,25 +29,15 @@ class Game:
         Player.PlaceInMaze(Maze)
         # Draw maze on screen
         Maze.DrawOnScreen()
-        # Start game
-        Game.StartGame(Maze)
-
-        # 3) Game loop
-
-        # Variable for end of game
-        EndOfGame: bool = False
-        # Do this until end of game is triggered
-        while not EndOfGame:
-            # Wait for a player action
-            PlayerAction: str = Player.WaitForAction()
-            # Do action
-            EndOfGame = Player.ExecuteAction(PlayerAction)
+        
+        # 3) Start game
+        Start(Maze)
 
 
     @staticmethod
-    def StartGame(Maze):
+    def Start(Maze):
         """ 
-            Give rules to player
+            Give rules to player and start the game
 
             :param arg1: The maze
             :type arg1: Maze
@@ -61,3 +50,16 @@ class Game:
             "\nÀ chaque tour tu peux effectuer l'une des actions suivantes :" + 
             "\nTe déplacer vers le (H)aut, le (B)as, la (G)auche, la (D)roite ou (Q)uitter le jeu (et perdre...)" + 
             "\nBonne chance.")
+
+        # Game loop
+
+        # Variable for end of game
+        EndOfGame: bool = False
+        
+        # Do this until end of game is triggered
+        while not EndOfGame:
+            # Wait for a player action
+            PlayerAction: str = Player.WaitForAction()
+            # Do action
+            EndOfGame = Player.ExecuteAction(PlayerAction)
+

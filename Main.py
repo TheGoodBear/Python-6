@@ -1,12 +1,12 @@
-# Maze v1.21
-# POO
+# Maze v1.3
+# PyGame
 
 # Modules importation
 # -------------------
-from Models.Game import *
+from Models.Application import Application
 
 # Application
 # -----------
 
 # Application start
-Game.StartApplication()
+Application.Start()

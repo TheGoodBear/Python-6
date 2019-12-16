@@ -1,20 +1,17 @@
-# Formation Python étape 5.1
+# Formation Python étape 6
 
-    Jeu du labyrinthe V1.21
+    Jeu du labyrinthe V1.3
 
     Notions abordées :
 
-    - Spécifications : 
-        - Sous-diagrammes/Processus (diagramme de flux)
+    - Spécifications : NA
 
     - IDE : NA
 
     - Architecture logicielle :
-        - Programmation Orientée Objet
-        - Instance de classe
+        - Module externe PyGame (https://www.pygame.org)
 
-    - Données : 
-        - Désérialisation JSON dans une classe
+    - Données : NA
 
     - Langage : NA
 
