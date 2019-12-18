@@ -1,4 +1,5 @@
 import pygame
+import GlobalVariables
 from Models.Game import Game
 
 class Application:
@@ -13,7 +14,6 @@ class Application:
     ScreenFormats = {
         "HD": (1280, 720),
         "FullHD": (1920, 1080)}
-
 
     @classmethod
     def Start(cls):
@@ -31,9 +31,9 @@ class Application:
 
         # PyGame was successfully initialized
         # Set screen
-        screen = pygame.display.set_mode(cls.ScreenFormats["HD"])
-        clock = pygame.time.Clock()
-        FPS = 60
+        GlobalVariables.Screen = pygame.display.set_mode(cls.ScreenFormats["HD"])
+        GlobalVariables.Screen.fill((255, 255, 255))
+        GlobalVariables.Clock = pygame.time.Clock()
 
         # Initialize game
         Game.Initialize()

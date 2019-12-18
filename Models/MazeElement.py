@@ -1,5 +1,7 @@
 import os
 import json
+import pygame
+import GlobalVariables
 
 class MazeElement:
     """
@@ -8,6 +10,7 @@ class MazeElement:
         Instanciable
     """
 
+    # Class properties
     Width: int = 0
     Height: int = 0
 
@@ -18,16 +21,18 @@ class MazeElement:
             :param arg1: The element
             :type arg1: Element
         """
+        # Instance properties
         self.Name: str = Element["Name"]
         self.Symbol: str = Element["Symbol"]
-        self.Image: str = Element["Image"]
+        self.ImageNames: list(str) = Element["Images"]
+        self.Images: list() = self.LoadImages(self.ImageNames)
         self.Behavior: list() = Element["Behavior"]
 
 
     @staticmethod
     def LoadElementsFromFile(Maze):
         """ 
-            Load maze elements from json file and store them into list of dictionaries
+            Load maze elements from json file and store them into list of MazeElements
 
             :param arg1: The maze
             :type arg1: Maze
@@ -54,6 +59,32 @@ class MazeElement:
             print("\nLes éléments du labyrinthe demandé n'ont pas été trouvés !\n")
             # exit application
             os._exit(1)
+
+
+    @staticmethod
+    def LoadImages(ImageNames: str) -> list():
+        """
+            Load images from resources and returns them
+
+            :param arg1: The name of the image file
+            :type arg1: string
+
+            :return: The list of all images
+            :rtype: list()
+        """
+        # for each image in ImageNames
+        for CurrentImage in ImageNames:
+            try:
+                if not CurrentImage.endswith("*"):
+                    # Image has a specific file name
+                    image = pygame.image.load(GlobalVariables.GraphicResourcePath + CurrentImage + GlobalVariables.ImageExtension)
+                    aa=0
+                    GlobalVariables.Screen.blit(image, (20, 20))
+                    pygame.display.flip()
+
+            except OSError:
+                # If there is an OSError exception
+                print("\nL'image {} n'a pas été trouvée !\n".format(CurrentImage))
 
     
     @staticmethod

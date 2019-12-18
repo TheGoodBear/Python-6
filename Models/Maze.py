@@ -1,6 +1,6 @@
 import os
 import random
-from Models.MazeElement import *
+from Models.MazeElement import MazeElement
 
 class Maze:
     """

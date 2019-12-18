@@ -7,7 +7,7 @@
 # For each element in maze :
 #    Name (string)              : friendly name
 #    Symbol (string)            : symbol used in .maz file
-#    Image (string)             : image used in game
+#    Images (list of string)    : images used in game (1 element in list for each possible state, if a name ends with *, choose a random image file which name starts with name minus *)
 #    Behavior (list of strings) : behaviors of element when encoutered by player, possible values : 
 #        "walk"    : player can walk on it
 #        "block"   : player cannot pass it

@@ -1,5 +1,5 @@
 from Models.Player import Player
-from Models.MazeElement import MazeElement
+from Models.Maze import Maze
 
 class Game:
     """
