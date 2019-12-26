@@ -12,7 +12,10 @@ class Application:
 
     # Possible screen formats (dictionary with tuples as values)
     ScreenFormats = {
+        "nHD": (640, 360),
+        "qHD": (960, 540),
         "HD": (1280, 720),
+        "HD+": (1600, 900),
         "FullHD": (1920, 1080)}
 
     @classmethod
@@ -31,7 +34,7 @@ class Application:
 
         # PyGame was successfully initialized
         # Set screen
-        GlobalVariables.Screen = pygame.display.set_mode(cls.ScreenFormats["HD"])
+        GlobalVariables.Screen = pygame.display.set_mode(cls.ScreenFormats["qHD"])
         GlobalVariables.Screen.fill((255, 255, 255))
         GlobalVariables.Clock = pygame.time.Clock()
 

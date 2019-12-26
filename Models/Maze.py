@@ -66,7 +66,7 @@ class Maze:
                             CurrentElement = MazeElement.GetElement(cls, Symbol=Character)
                             if(CurrentElement != None):
                                 # If an element was found, append element's image
-                                LineCharacters.append(CurrentElement.Image)
+                                LineCharacters.append(CurrentElement.Images[CurrentElement.CurrentImageIndex])
                             else:
                                 # If no element was found append character
                                 LineCharacters.append(Character)

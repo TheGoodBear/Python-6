@@ -26,6 +26,7 @@ class MazeElement:
         self.Symbol: str = Element["Symbol"]
         self.ImageNames: list(str) = Element["Images"]
         self.Images: list() = self.LoadImages(self.ImageNames)
+        self.CurrentImageIndex = 0
         self.Behavior: list() = Element["Behavior"]
 
 
@@ -78,9 +79,11 @@ class MazeElement:
                 if not CurrentImage.endswith("*"):
                     # Image has a specific file name
                     image = pygame.image.load(GlobalVariables.GraphicResourcePath + CurrentImage + GlobalVariables.ImageExtension)
-                    aa=0
                     GlobalVariables.Screen.blit(image, (20, 20))
-                    pygame.display.flip()
+                    pygame.display.update()
+                else:
+                    # Image is choosen randomly among all files with matching starting names
+                    
 
             except OSError:
                 # If there is an OSError exception
