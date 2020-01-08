@@ -38,5 +38,10 @@ class Application:
         GlobalVariables.Screen.fill((255, 255, 255))
         GlobalVariables.Clock = pygame.time.Clock()
 
+        MyImagePath = GlobalVariables.GraphicResourcePath + "Backpack" + GlobalVariables.ImageExtension
+        MyImage = pygame.image.load(MyImagePath)
+        GlobalVariables.Screen.blit(MyImage, (20, 20))
+        pygame.display.update()
+
         # Initialize game
         Game.Initialize()

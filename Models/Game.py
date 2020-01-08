@@ -1,4 +1,4 @@
-from Models.Player import Player
+from Models.Character import Character
 from Models.Maze import Maze
 
 class Game:
@@ -8,6 +8,9 @@ class Game:
         Not instanciable
         Static methods only
     """
+
+    # Class properties
+    Player = None
 
     @staticmethod
     def Initialize():
@@ -19,7 +22,7 @@ class Game:
 
         print("\nBonjour humain, merci de t'identifier afin que je puisse interagir avec toi.")
         # Ask for player data
-        PlayerName = Player.GetPlayerData()
+        Character.GetPlayerData()
 
         # 2) Initialize data
 

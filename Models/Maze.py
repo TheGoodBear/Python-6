@@ -12,8 +12,13 @@ class Maze:
     # Class properties
     FilePath: str 
     FileName: str 
-    # stores the maze structure (2 dimensional list)
-    Map = list()
+    # stores the maze structure in 3 layers (2 dimensional lists)
+    # MapLayer for fixed elements (walls, stairs, doors, ...)
+    MapLayer = list()
+    # ObjectLayer for items (pickable objects)
+    ObjectLayer = list()
+    # CharacterLayer for characters (player, ennemies, ...)
+    CharacterLayer = list()
     # stores the elements composing the maze
     Elements = list()
 
@@ -65,13 +70,14 @@ class Maze:
                             # Search in maze elements for matching symbol
                             CurrentElement = MazeElement.GetElement(cls, Symbol=Character)
                             if(CurrentElement != None):
-                                # If an element was found, append element's image
-                                LineCharacters.append(CurrentElement.Images[CurrentElement.CurrentImageIndex])
+                                # If an element was found
+                                    # append element
+                                    LineCharacters.append(CurrentElement)
                             else:
                                 # If no element was found append character
                                 LineCharacters.append(Character)
                     # Store LineCharacters list in Map list (2 dimensional list)
-                    cls.Map.append(LineCharacters)
+                    cls.MapLayer.append(LineCharacters)
 
         except OSError:
             # If there is an OSError exception
@@ -93,12 +99,12 @@ class Maze:
                 # draw random coordinates in maze limits
                 ObjectX: int = random.randint(0, len(cls.Map)-1)
                 ObjectY: int = random.randint(0, len(cls.Map[0])-1)
-                while(cls.Map[ObjectY][ObjectX] != MazeElement.GetElement(cls, "Sol").Image):
+                while(cls.MapLayer[ObjectY][ObjectX].Name != "Sol"):
                     # do it again until random position is ground
                     ObjectX = random.randint(0, len(cls.Map)-1)
                     ObjectY = random.randint(0, len(cls.Map[0])-1)
                 # place current object at this position (replace the ground with it)
-                cls.Map[ObjectY][ObjectX] = CurrentObject.Image
+                cls.ObjectLayer[ObjectY][ObjectX] = CurrentObject
 
 
     @classmethod
@@ -113,7 +119,7 @@ class Maze:
 
         # With simple loop (gives only the content)
         # For each line (Y) in Maze
-        for Line in cls.Map:
+        for Line in cls.MapLayer:
             # For each character (X) in line
             for Column in Line:
                 # Print current maze element at Y, X without jumping a line

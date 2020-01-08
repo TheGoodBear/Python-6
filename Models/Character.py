@@ -1,23 +1,35 @@
 from Models.Maze import *
 from Models.MazeElement import *
 
-class Player:
+class Character:
     """
-        Used to manage the player
+        Used to manage the characters
 
-        Not instanciable
+        Instanciable
     """
 
-    # class properties
-    Name: str = "Anonyme"
-    Image: str = "☻"
-    X: int = 0
-    Y: int = 0
-    Backpack : list() = []
+    # Class properties
+    # None
+
+    def __init__(self, CurrentCharacter):
+        """
+            Constructor
+
+            :param arg1: The character
+            :type arg1: Character
+        """
+        # Instance properties
+        self.Name: str = CurrentCharacter["Name"]
+        self.ImageNames: list(str) = CurrentCharacter["Images"]
+        self.Images: list() = self.LoadImages(self.ImageNames)
+        self.CurrentImageIndex = 0
+        self.Behaviors: list() = CurrentCharacter["Behaviors"]
+        self.Backpack: list() = CurrentCharacter["Backpack"]
+        self.X: int = 0
+        self.Y: int = 0
 
 
-    @classmethod
-    def GetPlayerData(cls):
+    def GetPlayerData(self):
         """ 
             Get player data
         """
@@ -29,33 +41,31 @@ class Player:
             Name = input("\nMerci d'entrer ton nom : ")
 
         # Update name
-        cls.Name = Name
+        self.Name = Name
 
 
-    @classmethod
-    def SayWelcome(cls):
+    def SayWelcome(self):
         """ 
             Say Welcome to player
         """
 
         print(
             "\nEnchanté {0}, j'espère que tu vas bien t'amuser." 
-            .format(cls.Name))
+            .format(self.Name))
 
 
-    @classmethod
-    def PlaceInMaze(cls,
+    def PlaceInMaze(self,
         Maze,
-        PlayerNewX: int = 0,
-        PlayerNewY: int = 0):
+        CharacterNewX: int = 0,
+        CharacterNewY: int = 0):
         """ 
-            Place player in maze
+            Place character in maze
 
             :param arg1: The maze
             :type arg1: Maze
-            :param arg2: The new X position of player
+            :param arg2: The new X position of character
             :type arg2: integer
-            :param arg3: The new Y position of player
+            :param arg3: The new Y position of character
             :type arg3: integer
         """
 
@@ -63,8 +73,8 @@ class Player:
         X: int = 0
         Y: int = 0
 
-        # Check if player is not already in the maze (coordinates set to 0)
-        if (cls.X == 0 and cls.Y == 0):
+        # Check if character is not already in the maze (coordinates set to 0)
+        if (self.X == 0 and self.Y == 0):
             # In that case put him at the entrance
             # find it by browsing maze list
             for Line in Maze.Map:
@@ -72,12 +82,12 @@ class Player:
                 X = 0
                 for Character in Line:
                     # If position contains entrance (E)
-                    if (Maze.Map[Y][X] == MazeElement.GetElement(Maze, "Entrée").Image):
-                        # Save coordinates for player
-                        cls.X = X
-                        cls.Y = Y
-                        # Replace entrance with player
-                        Maze.Map[Y][X] = cls.Image
+                    if (Maze.Map[Y][X].Name == "Entrée"):
+                        # Save coordinates for character
+                        self.X = X
+                        self.Y = Y
+                        # put him in the maze
+                        Maze.CharacterLayer[Y][X] = self
                         # Exit loops (and method)
                         return
                     # Increment X coordinate
@@ -86,30 +96,33 @@ class Player:
                 Y += 1
 
         else:
-            # Player is already in maze
-            # replace actual player position with a floor
-            Maze.Map[cls.Y][cls.X] = MazeElement.GetElement(Maze, "Sol").Image
-            # and place player to new position
-            Maze.Map[PlayerNewY][PlayerNewX] = cls.Image
+            # Character is already in maze
+            # replace actual character position with nothing
+            Maze.CharacterLayer[self.Y][self.X] = None
+            # and place character to new position
+            Maze.CharacterLayer[CharacterNewY][CharacterNewX] = self
 
 
-    @classmethod
-    def WaitForAction(cls) -> str:
+    @staticmethod
+    def WaitForAction(Character) -> str:
         """ 
             Wait player to make an action
 
-            :return: The name of the action if the action is valid
+            :param arg1: The character
+            :type arg1: Character
+
+            :return: The name of the action if it is valid
             :rtype: string
         """
 
         # Show player backpack content
         print("\nContenu du sac à dos : ", end="")
-        if (len(cls.Backpack) == 0):
+        if (len(Character.Backpack) == 0):
             # if backpack is empty (nothing in list)
             print("vide")
         else:
             # if backpack contains at least 1 object (* means every item in list)
-            print(*cls.Backpack, sep=', ')
+            print(*Character.Backpack, sep=', ')
 
         # Ask player input until it is a valid action
         while True:
@@ -137,75 +150,79 @@ class Player:
                 print("Cette action n'est pas reconnue.")
 
 
-    @classmethod
-    def ExecuteAction(cls,
-        Action: str) -> bool:
+    def ExecuteAction(self,     
+        Action: str,
+        Maze) -> bool:
         """ 
-            Execute player action and returns new position
+            Execute character action and returns new position
 
             :param arg1: The action
             :type arg1: string
+            :param arg2: The maze
+            :type arg2: Maze
 
             :return: If this is the end of the game
             :rtype: boolean
         """
 
-        # Local variables for new player coordinates
-        PlayerNewX: int = cls.X
-        PlayerNewY: int = cls.Y
+        # Local variables for character new coordinates
+        CharacterNewX: int = self.X
+        CharacterNewY: int = self.Y
 
-        # Calculate player new coordinates
+        # Calculate character new coordinates
         if (Action == "MoveUp"):
-            PlayerNewY -= 1
+            CharacterNewY -= 1
         elif (Action == "MoveDown"):
-            PlayerNewY += 1
+            CharacterNewY += 1
         elif (Action == "MoveLeft"):
-            PlayerNewX -= 1
+            CharacterNewX -= 1
         elif (Action == "MoveRight"):
-            PlayerNewX += 1
+            CharacterNewX += 1
         elif (Action == "QuitGame"):
             # if action is QuitGame then return game end
             return True
 
 
         # Check if new coordinates are valid (into maze limits)
-        if (PlayerNewX<0 or 
-            PlayerNewX>len(Maze.Map[0]) or 
-            PlayerNewY<0 or 
-            PlayerNewY>len(Maze.Map)):
-            # if player is out of maze limits
+        if (CharacterNewX<0 or 
+            CharacterNewX>len(Maze.Map[0]) or 
+            CharacterNewY<0 or 
+            CharacterNewY>len(Maze.Map)):
+            # if character is out of maze limits
             print("Tu es en dehors des limites, tu ne peux pas aller par là !")
             # redraw maze
             Maze.DrawOnScreen()
             return False
 
-        # Get current maze element at new player coordinates
-        CurrentElement = MazeElement.GetElement(Maze,Image=Maze.Map[PlayerNewY][PlayerNewX])
+        # Get current maze elements at coordinates
+        CurrentMapElement = Maze.MapLayer[CharacterNewY][CharacterNewX]
+        CurrentObject = Maze.ObjectLayer[CharacterNewY][CharacterNewX]
+        CurrentCharacter = Maze.CharacterLayer[CharacterNewY][CharacterNewX]
 
-        # Check current element behavior or name
-        if (CurrentElement.Name == "Sortie"):
+        # Check current map/object/character behavior or name
+        if (CurrentMapElement.Name == "Sortie"):
             # if exit is reached
             # check if player has all needed objects
             MissingObjects: int = 0
             # for each element in maze
             for Element in Maze.Elements:
                 if ("Combine" in Element.Behavior
-                    and not Element.Name in cls.Backpack):
+                    and not Element.Name in self.Backpack):
                     # this element can be combined but is not in player backpack
                     MissingObjects += 1
             if (MissingObjects == 0):
-                # player has all objects
-                # replace player in maze
-                cls.PlaceInMaze(Maze,PlayerNewX,PlayerNewY)
-                # assign new coordinates to player
-                cls.X = PlayerNewX
-                cls.Y = PlayerNewY
-                # redraw maze with new player position
+                # character has all objects
+                # replace character in maze
+                self.PlaceInMaze(Maze,CharacterNewX,CharacterNewY)
+                # assign new coordinates to character
+                self.X = CharacterNewX
+                self.Y = CharacterNewY
+                # redraw maze with new character position
                 Maze.DrawOnScreen()
                 # say victory
                 print(
                     "\nOuiiii, bravo {0}, tu as trouvé la sortie et tu avais tous les objets nécessaires !\n"
-                    .format(cls.Name))
+                    .format(self.Name))
                 # and return game end
                 return True
             else:
@@ -215,37 +232,37 @@ class Player:
                     "\nHa, tu as bien trouvé la sortie mais il te manque encore {0} objet(s) pour ouvrir la porte..."
                     .format(MissingObjects))
         
-        elif ("Block" in CurrentElement.Behavior):
+        elif ("Block" in CurrentMapElement.Behavior):
             # if there is an obstacle, say it
             print("Oups un mur, tu ne peux pas bouger !")
             # and redraw maze
             Maze.DrawOnScreen()
         
-        elif ("Pick" in CurrentElement.Behavior):
+        elif ("Pick" in CurrentObject.Behavior):
             # if there is an object, put it in backpack
-            cls.Backpack.append(CurrentElement.Name)
+            self.Backpack.append(CurrentObject)
             # say it
             print(
                 "Chouette, tu as trouvé un(e) {0}\n"
-                .format(CurrentElement.Name))
-            # remove it from maze (put floor at its place)
-            Maze.Map[PlayerNewY][PlayerNewX] = MazeElement.GetElement(Maze,"Sol").Image
-            # replace player in maze
-            cls.PlaceInMaze(Maze,PlayerNewX,PlayerNewY)
-            # assign new coordinates to player
-            cls.X = PlayerNewX
-            cls.Y = PlayerNewY
-            # and redraw maze with new player position
+                .format(CurrentObject.Name))
+            # remove it from maze 
+            Maze.ObjectLayer[CharacterNewY][CharacterNewX] = None
+            # replace character in maze
+            self.PlaceInMaze(Maze,CharacterNewX,CharacterNewY)
+            # assign new coordinates to character
+            self.X = CharacterNewX
+            self.Y = CharacterNewY
+            # and redraw maze with new character position
             Maze.DrawOnScreen()
             
         else:
             # if nothing special
-            # replace player in maze
-            cls.PlaceInMaze(Maze,PlayerNewX,PlayerNewY)
-            # assign new coordinates to player
-            cls.X = PlayerNewX
-            cls.Y = PlayerNewY
-            # and redraw maze with new player position
+            # replace character in maze
+            self.PlaceInMaze(Maze,CharacterNewX,CharacterNewY)
+            # assign new coordinates to character
+            self.X = CharacterNewX
+            self.Y = CharacterNewY
+            # and redraw maze with new character position
             Maze.DrawOnScreen()
 
         # Game is not yet ended    
