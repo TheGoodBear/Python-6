@@ -2,17 +2,32 @@
 
 # File name : Maze 1.maz
 # Associated JSON elements for this maze must be found in "<File name> Elements.json" file
+# Associated JSON characters for this maze must be found in "<File name> Characters.json" file
 
 # Structure of JSON data :
 # For each element in maze :
-#    Name (string)              : friendly name
-#    Symbol (string)            : symbol used in .maz file
-#    Images (list of string)    : images used in game (1 element in list for each possible state, if a name ends with *, choose a random image file which name starts with name minus *)
-#    Behavior (list of strings) : behaviors of element when encoutered by player, possible values : 
-#        "walk"    : player can walk on it
-#        "block"   : player cannot pass it
-#        "pick"    : element can be picked up and put in backpack
-#        "combine" : element is part of victory (all combined elements must be found to open exit door)
+#    Name (string)               : friendly name
+#    Symbol (string)             : symbol used in .maz file
+#    Images (list of string)     : images used in game (1 element in list for each possible state, if a name ends with *, choose a random image file which name starts with name minus *)
+#    Behaviors (list of string)  : behaviors of element when encoutered by a character, possible values : 
+#        "walk"    : character can walk on it
+#        "block"   : character cannot pass it
+#        "pick"    : object can be picked up and put in backpack
+#        "combine" : object is part of victory (all combined objects must be found to open exit door)
+# For each character in maze :
+#    Name (string)               : friendly name
+#    Images (list of string)     : images used in game (1 element in list for each possible state, if a name ends with *, choose a random image file which name starts with name minus *)
+#    Behaviors (list of string)  : behaviors of character, possible values : 
+#        "player"   : character is the player
+#        "friendly" : character is player friendly
+#        "neutral   : character is neutral to player
+#        "enemy"    : character is player enemy
+#    Backpack (list of string)   : objects in backpack
+#    X (integer)                 : character coordinate in maze (horizontal axis)
+#    Y (integer)                 : character coordinate in maze (vertical axis)
+#    Status (list of string)     : status of character, possible values : 
+#        "alive"    : character is alive
+#        "dead"     : character is dead
 
 # Symbols used in map :
 #    space : floor

@@ -19,8 +19,10 @@ class Maze:
     ObjectLayer = list()
     # CharacterLayer for characters (player, ennemies, ...)
     CharacterLayer = list()
-    # stores the elements composing the maze
+    # Elements composing the maze
     Elements = list()
+    # Characters acting in the maze
+    Characters = list()
 
 
     @classmethod
@@ -34,6 +36,9 @@ class Maze:
             :type arg1: string
             :param arg2: Maze file name
             :type arg2: string
+
+            :return: the player
+            :rtype: Character
         """
         cls.FilePath = FilePath
         cls.FileName = FileName
@@ -61,23 +66,25 @@ class Maze:
                     # Ignore blank lines and comments
                     if(Line[0] == "\n" or Line[0] == "#"):
                         continue
-                    # Define temporary list to store every character in a line
-                    LineCharacters = list()
-                    # For each Character in Line
-                    for Character in Line:
-                        # Store Character in LineCharacters list (except new line \n)
-                        if (Character != "\n"):
+                    # Define temporary list to store every character in line
+                    LineData = list()
+                    OtherLayerData = list()
+                    # For each character in Line
+                    for Char in Line:
+                        # Store character in LineData list (except new line \n)
+                        if (Char != "\n"):
                             # Search in maze elements for matching symbol
-                            CurrentElement = MazeElement.GetElement(cls, Symbol=Character)
+                            CurrentElement = MazeElement.GetElement(cls, Symbol=Char)
                             if(CurrentElement != None):
                                 # If an element was found
                                     # append element
-                                    LineCharacters.append(CurrentElement)
-                            else:
-                                # If no element was found append character
-                                LineCharacters.append(Character)
-                    # Store LineCharacters list in Map list (2 dimensional list)
-                    cls.MapLayer.append(LineCharacters)
+                                    LineData.append(CurrentElement)
+                                    OtherLayerData.append(None)
+                    # Store LineData list in MapLayer list
+                    cls.MapLayer.append(LineData)
+                    # Store blank data list in Object and Character Layers lists
+                    cls.ObjectLayer.append(OtherLayerData)
+                    cls.CharacterLayer.append(OtherLayerData)
 
         except OSError:
             # If there is an OSError exception
@@ -94,15 +101,15 @@ class Maze:
 
         # Browse every maze element
         for CurrentObject in cls.Elements:
-            if("Pick" in CurrentObject.Behavior):
+            if("Pick" in CurrentObject.Behaviors):
                 # the current object is pickable
                 # draw random coordinates in maze limits
-                ObjectX: int = random.randint(0, len(cls.Map)-1)
-                ObjectY: int = random.randint(0, len(cls.Map[0])-1)
+                ObjectX: int = random.randint(0, len(cls.MapLayer)-1)
+                ObjectY: int = random.randint(0, len(cls.MapLayer[0])-1)
                 while(cls.MapLayer[ObjectY][ObjectX].Name != "Sol"):
                     # do it again until random position is ground
-                    ObjectX = random.randint(0, len(cls.Map)-1)
-                    ObjectY = random.randint(0, len(cls.Map[0])-1)
+                    ObjectX = random.randint(0, len(cls.MapLayer)-1)
+                    ObjectY = random.randint(0, len(cls.MapLayer[0])-1)
                 # place current object at this position (replace the ground with it)
                 cls.ObjectLayer[ObjectY][ObjectX] = CurrentObject
 

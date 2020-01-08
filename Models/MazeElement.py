@@ -1,7 +1,6 @@
 import os
 import json
-import pygame
-import GlobalVariables
+import Utilities
 
 class MazeElement:
     """
@@ -25,7 +24,7 @@ class MazeElement:
         self.Name: str = Element["Name"]
         self.Symbol: str = Element["Symbol"]
         self.ImageNames: list(str) = Element["Images"]
-        self.Images: list() = self.LoadImages(self.ImageNames)
+        self.Images: list() = Utilities.LoadImages(self.ImageNames)
         self.CurrentImageIndex = 0
         self.Behaviors: list() = Element["Behaviors"]
 
@@ -33,7 +32,7 @@ class MazeElement:
     @staticmethod
     def LoadElementsFromFile(Maze):
         """ 
-            Load maze elements from json file and store them into list of MazeElements
+            Load maze elements from json file and store them into list of Maze Elements
 
             :param arg1: The maze
             :type arg1: Maze
@@ -45,7 +44,7 @@ class MazeElement:
             with open(Maze.FilePath + Maze.FileName + " Elements.json", "r", encoding='utf-8') as MyFile:
                 # Load them into maze elements list of dictionary
                 TempElements = json.load(MyFile)
-                # Transforms list of dictionary into list of MazeElements
+                # Transforms list of dictionary into list of Maze Elements
                 for TempElement in TempElements:
                     Maze.Elements.append(MazeElement(TempElement))
 
@@ -60,51 +59,6 @@ class MazeElement:
             print("\nLes éléments du labyrinthe demandé n'ont pas été trouvés !\n")
             # exit application
             os._exit(1)
-
-
-    @staticmethod
-    def LoadImages(ImageNames: str) -> list():
-        """
-            Load images from resources and returns them
-
-            :param arg1: The name of the image file
-            :type arg1: string
-
-            :return: The list of all images
-            :rtype: list()
-        """
-        # MyImagePath = GlobalVariables.GraphicResourcePath + "Backpack" + GlobalVariables.ImageExtension
-        # MyImage = pygame.image.load(MyImagePath)
-        # GlobalVariables.Screen.blit(MyImage, (20, 20))
-        # pygame.display.update()
-
-        Images = list()
-
-        # for each image in ImageNames
-        for CurrentImage in ImageNames:
-            try:
-                MyImagePath = GlobalVariables.GraphicResourcePath + CurrentImage + GlobalVariables.ImageExtension
-                MyImage = None
-                if not CurrentImage.endswith("*"):
-                    # Image has a specific file name
-                    MyImage = pygame.image.load(MyImagePath)
-                    GlobalVariables.Screen.blit(MyImage, (20, 20))
-                    pygame.display.update()
-                else:
-                    # Image is choosen randomly among all files with matching starting names
-                    MyImage = pygame.image.load(GlobalVariables.GraphicResourcePath + "Scroll" + GlobalVariables.ImageExtension)
-                    GlobalVariables.Screen.blit(MyImage, (20, 20))
-                    pygame.display.update()
-                
-                # add image to list
-                Images.append(MyImage)
-
-            except OSError:
-                # If there is an OSError exception
-                print("\nL'image {} n'a pas été trouvée !\n".format(CurrentImage))
-
-        # returns list to item's image list
-        return Images
 
 
     @staticmethod

@@ -1,5 +1,6 @@
 from Models.Maze import *
 from Models.MazeElement import *
+import Utilities
 
 class Character:
     """
@@ -21,12 +22,52 @@ class Character:
         # Instance properties
         self.Name: str = CurrentCharacter["Name"]
         self.ImageNames: list(str) = CurrentCharacter["Images"]
-        self.Images: list() = self.LoadImages(self.ImageNames)
+        self.Images: list() = Utilities.LoadImages(self.ImageNames)
         self.CurrentImageIndex = 0
         self.Behaviors: list() = CurrentCharacter["Behaviors"]
         self.Backpack: list() = CurrentCharacter["Backpack"]
-        self.X: int = 0
-        self.Y: int = 0
+        self.X: int = CurrentCharacter["X"]
+        self.Y: int = CurrentCharacter["Y"]
+        self.Status: list() = CurrentCharacter["Status"]
+
+
+    @staticmethod
+    def LoadCharactersFromFile(Maze):
+        """ 
+            Load maze characters from json file and store them into list of Maze Characters
+
+            :param arg1: The maze
+            :type arg1: Maze
+
+            :return: the player
+            :rtype: Character
+        """
+
+        # try/exception block to trap errors
+        try:
+            # Used to store player
+            Player = None
+
+            # Open JSON file in read mode (and automatically close it when finished)
+            with open(Maze.FilePath + Maze.FileName + " Characters.json", "r", encoding='utf-8') as MyFile:
+                # Load them into maze characters list of dictionary
+                TempCharacters = json.load(MyFile)
+                # Transforms list of dictionary into list of Maze Characters
+                for TempCharacter in TempCharacters:
+                    CurrentCharacter = Character(TempCharacter)
+                    Maze.Characters.append(CurrentCharacter)
+                    # if current character is player, save it
+                    if(CurrentCharacter.Behaviors[0].lower() == "player"):
+                        Player = CurrentCharacter
+            
+            # Returns Player
+            return Player
+
+        except OSError:
+            # If there is an OSError exception
+            print("\nLes personnages du labyrinthe demandé n'ont pas été trouvés !\n")
+            # exit application
+            os._exit(1)
 
 
     def GetPlayerData(self):
@@ -36,9 +77,11 @@ class Character:
 
         Name: str = ""
 
+        print("\nBonjour humain, merci de t'identifier afin que je puisse interagir avec toi.")
+
         # Ask for name until it is filled
         while(Name == ""):
-            Name = input("\nMerci d'entrer ton nom : ")
+            Name = input("\nComment dois-je t'appeller : ")
 
         # Update name
         self.Name = Name
@@ -77,17 +120,27 @@ class Character:
         if (self.X == 0 and self.Y == 0):
             # In that case put him at the entrance
             # find it by browsing maze list
-            for Line in Maze.Map:
+            for Y, Line in enumerate(Maze.MapLayer):
                 # New line, set X coordinate to 0
                 X = 0
-                for Character in Line:
+                for X, CurrentElement in enumerate(Line):
                     # If position contains entrance (E)
-                    if (Maze.Map[Y][X].Name == "Entrée"):
-                        # Save coordinates for character
-                        self.X = X
-                        self.Y = Y
+                    if (CurrentElement.Name == "Entrée"):
+                        # push character from entrance
+                        if (X >= 0 and Maze.MapLayer[Y][X-1].Name == "Sol"):
+                            self.X = X - 1
+                            self.Y = Y
+                        elif (X <= len(Maze.MapLayer[0]) and Maze.MapLayer[Y][X+1].Name == "Sol"):
+                            self.X = X + 1
+                            self.Y = Y
+                        elif (Y >= 0 and Maze.MapLayer[Y-1][X].Name == "Sol"):
+                            self.X = X
+                            self.Y = Y - 1
+                        elif (Y <= len(Maze.MapLayer) and Maze.MapLayer[Y+1][X].Name == "Sol"):
+                            self.X = X
+                            self.Y = Y + 1
                         # put him in the maze
-                        Maze.CharacterLayer[Y][X] = self
+                        Maze.CharacterLayer[self.Y][self.X] = self
                         # Exit loops (and method)
                         return
                     # Increment X coordinate
@@ -185,9 +238,9 @@ class Character:
 
         # Check if new coordinates are valid (into maze limits)
         if (CharacterNewX<0 or 
-            CharacterNewX>len(Maze.Map[0]) or 
+            CharacterNewX>len(Maze.MapLayer[0]) or 
             CharacterNewY<0 or 
-            CharacterNewY>len(Maze.Map)):
+            CharacterNewY>len(Maze.MapLayer)):
             # if character is out of maze limits
             print("Tu es en dehors des limites, tu ne peux pas aller par là !")
             # redraw maze
@@ -232,13 +285,13 @@ class Character:
                     "\nHa, tu as bien trouvé la sortie mais il te manque encore {0} objet(s) pour ouvrir la porte..."
                     .format(MissingObjects))
         
-        elif ("Block" in CurrentMapElement.Behavior):
+        elif ("Block" in CurrentMapElement.Behaviors):
             # if there is an obstacle, say it
             print("Oups un mur, tu ne peux pas bouger !")
             # and redraw maze
             Maze.DrawOnScreen()
         
-        elif ("Pick" in CurrentObject.Behavior):
+        elif ("Pick" in CurrentObject.Behaviors):
             # if there is an object, put it in backpack
             self.Backpack.append(CurrentObject)
             # say it

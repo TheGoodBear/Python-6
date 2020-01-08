@@ -1,0 +1,12 @@
+[
+    {
+        "Name": "",
+        "Images": ["PlayerMale", "PlayerFemale"],
+        "RandomImage": false,
+        "Behaviors": ["Player"],
+        "Backpack": [],
+        "X": 0,
+        "Y": 0,
+        "Status": ["Alive"]
+    }
+]
