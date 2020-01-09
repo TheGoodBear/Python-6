@@ -1,0 +1,29 @@
+[
+    {
+        "Name": "Plan",
+        "Icon": "",
+        "Background": "Floor",
+        "Width": 70,
+        "Height": 100,
+        "X": 0,
+        "Y": 0
+    },
+    {
+        "Name": "Sac",
+        "Icon": "Backpack",
+        "Background": "UIBackground",
+        "Width": 30,
+        "Height": 50,
+        "X": 70,
+        "Y": 0
+    },
+    {
+        "Name": "Légende",
+        "Icon": "",
+        "Background": "UIText",
+        "Width": 30,
+        "Height": 50,
+        "X": 70,
+        "Y": 50
+    }
+]

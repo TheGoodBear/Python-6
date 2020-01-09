@@ -1,6 +1,6 @@
+import Utilities
 from Models.Maze import *
 from Models.MazeElement import *
-import Utilities
 
 class Character:
     """
@@ -12,23 +12,23 @@ class Character:
     # Class properties
     # None
 
-    def __init__(self, CurrentCharacter):
+    def __init__(self, CharacterData):
         """
             Constructor
 
             :param arg1: The character
-            :type arg1: Character
+            :type arg1: Dictionary
         """
         # Instance properties
-        self.Name: str = CurrentCharacter["Name"]
-        self.ImageNames: list(str) = CurrentCharacter["Images"]
+        self.Name: str = CharacterData["Name"]
+        self.ImageNames: list(str) = CharacterData["Images"]
         self.Images: list() = Utilities.LoadImages(self.ImageNames)
         self.CurrentImageIndex = 0
-        self.Behaviors: list() = CurrentCharacter["Behaviors"]
-        self.Backpack: list() = CurrentCharacter["Backpack"]
-        self.X: int = CurrentCharacter["X"]
-        self.Y: int = CurrentCharacter["Y"]
-        self.Status: list() = CurrentCharacter["Status"]
+        self.Behaviors: list() = CharacterData["Behaviors"]
+        self.Backpack: list() = CharacterData["Backpack"]
+        self.X: int = CharacterData["X"]
+        self.Y: int = CharacterData["Y"]
+        self.Status: list() = CharacterData["Status"]
 
 
     @staticmethod

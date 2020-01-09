@@ -13,20 +13,20 @@ class MazeElement:
     Width: int = 0
     Height: int = 0
 
-    def __init__(self, Element):
+    def __init__(self, ElementData):
         """
             Constructor
 
             :param arg1: The element
-            :type arg1: Element
+            :type arg1: Dictionary
         """
         # Instance properties
-        self.Name: str = Element["Name"]
-        self.Symbol: str = Element["Symbol"]
-        self.ImageNames: list(str) = Element["Images"]
+        self.Name: str = ElementData["Name"]
+        self.Symbol: str = ElementData["Symbol"]
+        self.ImageNames: list(str) = ElementData["Images"]
         self.Images: list() = Utilities.LoadImages(self.ImageNames)
         self.CurrentImageIndex = 0
-        self.Behaviors: list() = Element["Behaviors"]
+        self.Behaviors: list() = ElementData["Behaviors"]
 
 
     @staticmethod

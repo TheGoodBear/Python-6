@@ -1,6 +1,8 @@
+import GlobalVariables
 from Models.Character import Character
 from Models.Maze import Maze
 from Models.MazeElement import MazeElement
+from Models.ScreenPlaceholder import ScreenPlaceholder
 
 class Game:
     """
@@ -19,7 +21,17 @@ class Game:
             Initialize game and show initial message
         """
 
-        # 1) Initialize data
+        # 1) Initialize screen
+        ScreenPlaceholders = ScreenPlaceholder.LoadPlaceholdersFromFile()
+        GlobalVariables.MapPlaceholder = ScreenPlaceholder(
+            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Plan"))
+        GlobalVariables.BackpackPlaceholder = ScreenPlaceholder(
+            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Sac"))
+        GlobalVariables.DialogPlaceholder = ScreenPlaceholder(
+            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Légende"))
+
+
+        # 2) Initialize data
 
         # Initialize maze
         Maze.Initialize()
@@ -31,8 +43,9 @@ class Game:
         cls.Player.PlaceInMaze(Maze)
         # Draw maze on screen
         Maze.DrawOnScreen()
-        
-        # 2) Start game
+
+
+        # 3) Start game
         cls.Start(Maze)
 
 
