@@ -14,15 +14,14 @@ class Maze:
     FileName: str 
     # stores the maze structure in 3 layers (2 dimensional lists)
     # MapLayer for fixed elements (walls, stairs, doors, ...)
-    MapLayer = list()
+    MapLayer: list = []
     # ObjectLayer for items (pickable objects)
-    ObjectLayer = list()
+    ObjectLayer: list = []
     # CharacterLayer for characters (player, ennemies, ...)
-    CharacterLayer = list()
-    # Elements composing the maze
-    Elements = list()
+    CharacterLayer: list = []    # Elements composing the maze
+    Elements: list = []
     # Characters acting in the maze
-    Characters = list()
+    Characters: list = []
 
 
     @classmethod

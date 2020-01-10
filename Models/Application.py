@@ -1,5 +1,5 @@
 import pygame
-import GlobalVariables
+import Utilities.GlobalVariables as GV
 from Models.Game import Game
 
 class Application:
@@ -26,10 +26,15 @@ class Application:
 
         # PyGame was successfully initialized
         # Set screen
-        GlobalVariables.Screen = pygame.display.set_mode(
-            GlobalVariables.ScreenFormats[GlobalVariables.DefaultScreenFormat])
-        GlobalVariables.Screen.fill(GlobalVariables.ColorBlack)
-        GlobalVariables.Clock = pygame.time.Clock()
+        # pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF
+        GV.Screen = pygame.display.set_mode(
+            GV.ScreenFormats[GV.DefaultScreenFormat])
+        GV.Screen.fill(GV.ColorBlack)
+        GV.Clock = pygame.time.Clock()
+
+        infoObject = pygame.display.Info()
+        # pygame.display.set_mode((infoObject.current_w, infoObject.current_h))
+        print(infoObject.current_w, infoObject.current_h)
 
         # Initialize game
         Game.Initialize()

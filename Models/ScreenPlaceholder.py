@@ -1,6 +1,7 @@
+import os
 import json
 import pygame
-import GlobalVariables
+import Utilities.GlobalVariables as GV
 
 class ScreenPlaceholder:
     """
@@ -13,28 +14,28 @@ class ScreenPlaceholder:
     FilePath: str 
     FileName: str 
 
-    def __init__(self, PlaceholderData):
+    def __init__(self, PlaceholderData: dict):
         """
             Constructor
         """
 
-        ScreenWidth = GlobalVariables.ScreenFormats[
-            GlobalVariables.DefaultScreenFormat][0]
-        ScreenHeight = GlobalVariables.ScreenFormats[
-            GlobalVariables.DefaultScreenFormat][1]
+        GV.ScreenWidth = GV.ScreenFormats[
+            GV.DefaultScreenFormat][0]
+        GV.ScreenHeight = GV.ScreenFormats[
+            GV.DefaultScreenFormat][1]
 
         # Instance properties
         self.Name: str = PlaceholderData["Name"]
         self.Icon: str = PlaceholderData["Icon"]
         self.Background: str = PlaceholderData["Background"]
         self.WidthPercent: int = PlaceholderData["Width"]
-        self.Width: int = int(ScreenWidth * self.WidthPercent / 100)
+        self.Width: int = int(GV.ScreenWidth * self.WidthPercent / 100)
         self.HeightPercent: int = PlaceholderData["Height"]
-        self.Height: int = int(ScreenHeight * self.HeightPercent / 100)
+        self.Height: int = int(GV.ScreenHeight * self.HeightPercent / 100)
         self.XPercent: int = PlaceholderData["X"]
-        self.X: int = int(ScreenWidth * self.XPercent / 100)
+        self.X: int = int(GV.ScreenWidth * self.XPercent / 100)
         self.YPercent: int = PlaceholderData["Y"]
-        self.Y: int = int(ScreenHeight * self.YPercent / 100)
+        self.Y: int = int(GV.ScreenHeight * self.YPercent / 100)
 
 
     @staticmethod
@@ -50,7 +51,7 @@ class ScreenPlaceholder:
         try:
 
             # Open JSON file in read mode (and automatically close it when finished)
-            with open("Data/ScreenData.json", "r", encoding='utf-8') as MyFile:
+            with open("Utilities/ScreenData.json", "r", encoding='utf-8') as MyFile:
                 # Load data into list of dictionary
                 Placeholders = json.load(MyFile)
             

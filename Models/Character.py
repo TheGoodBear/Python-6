@@ -1,4 +1,4 @@
-import Utilities
+import Utilities.Utilities as Util
 from Models.Maze import *
 from Models.MazeElement import *
 
@@ -21,14 +21,14 @@ class Character:
         """
         # Instance properties
         self.Name: str = CharacterData["Name"]
-        self.ImageNames: list(str) = CharacterData["Images"]
-        self.Images: list() = Utilities.LoadImages(self.ImageNames)
-        self.CurrentImageIndex = 0
-        self.Behaviors: list() = CharacterData["Behaviors"]
-        self.Backpack: list() = CharacterData["Backpack"]
+        self.ImageNames: list = CharacterData["Images"]
+        self.Images: list = Util.LoadImages(self.ImageNames)
+        self.CurrentImageIndex: int = 0
+        self.Behaviors: list = CharacterData["Behaviors"]
+        self.Backpack: list = CharacterData["Backpack"]
         self.X: int = CharacterData["X"]
         self.Y: int = CharacterData["Y"]
-        self.Status: list() = CharacterData["Status"]
+        self.Status: list = CharacterData["Status"]
 
 
     @staticmethod
@@ -291,7 +291,7 @@ class Character:
             # and redraw maze
             Maze.DrawOnScreen()
         
-        elif ("Pick" in CurrentObject.Behaviors):
+        elif (CurrentObject != None and "Pick" in CurrentObject.Behaviors):
             # if there is an object, put it in backpack
             self.Backpack.append(CurrentObject)
             # say it

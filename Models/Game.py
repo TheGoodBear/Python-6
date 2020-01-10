@@ -1,4 +1,6 @@
-import GlobalVariables
+import pygame
+import Utilities.GlobalVariables as GV
+import Utilities.Utilities as Util
 from Models.Character import Character
 from Models.Maze import Maze
 from Models.MazeElement import MazeElement
@@ -22,14 +24,7 @@ class Game:
         """
 
         # 1) Initialize screen
-        ScreenPlaceholders = ScreenPlaceholder.LoadPlaceholdersFromFile()
-        GlobalVariables.MapPlaceholder = ScreenPlaceholder(
-            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Plan"))
-        GlobalVariables.BackpackPlaceholder = ScreenPlaceholder(
-            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Sac"))
-        GlobalVariables.DialogPlaceholder = ScreenPlaceholder(
-            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Légende"))
-
+        cls.InitializeScreen()
 
         # 2) Initialize data
 
@@ -48,6 +43,44 @@ class Game:
         # 3) Start game
         cls.Start(Maze)
 
+    @classmethod
+    def InitializeScreen(cls):
+        """ 
+            Initialize screen
+        """
+
+        # Load view placeholders from data file (as a dictionary)
+        ScreenPlaceholders = ScreenPlaceholder.LoadPlaceholdersFromFile()
+        # Instantiate each placeholder and add it to list of ScreenPlaceholder objects
+        GV.MapPlaceholder = ScreenPlaceholder(
+            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Plan"))
+        GV.Placeholders.append(GV.MapPlaceholder)
+        GV.BackpackPlaceholder = ScreenPlaceholder(
+            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Sac"))
+        GV.Placeholders.append(GV.BackpackPlaceholder)
+        GV.DialogPlaceholder = ScreenPlaceholder(
+            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Légende"))
+        GV.Placeholders.append(GV.DialogPlaceholder)
+
+        # Draw each placeholder on screen
+        for CurrentPH in GV.Placeholders:
+            if(CurrentPH.Background != ""):
+                # if placeholder has a background image
+                # get image
+                BackgroundImage = Util.GetImage(
+                    GV.GraphicResourcePath + CurrentPH.Background + GV.ImageExtension)
+                # scale image
+                BackgroundImage = pygame.transform.scale(
+                    BackgroundImage, 
+                    (CurrentPH.Width, CurrentPH.Height))
+                # draw it
+                GV.Screen.blit(
+                    BackgroundImage, 
+                    (CurrentPH.X, CurrentPH.Y))
+        
+        # update screen to show images
+        pygame.display.update()
+
 
     @classmethod
     def Start(cls, Maze):
@@ -58,6 +91,10 @@ class Game:
             :type arg1: Maze
         """
 
+        # Draw screen background
+
+
+        # Show initial message
         print(
             "\nTrès bien {0}, ton objectif est de sortir du labyrinthe.".format(cls.Player.Name) + 
             "\nPour cela il te faudra trouver la sortie et avoir collecté les objets nécessaires à l'ouverture de la porte." + 

@@ -1,6 +1,6 @@
 import os
 import json
-import Utilities
+import Utilities.Utilities as Util
 
 class MazeElement:
     """
@@ -23,10 +23,10 @@ class MazeElement:
         # Instance properties
         self.Name: str = ElementData["Name"]
         self.Symbol: str = ElementData["Symbol"]
-        self.ImageNames: list(str) = ElementData["Images"]
-        self.Images: list() = Utilities.LoadImages(self.ImageNames)
-        self.CurrentImageIndex = 0
-        self.Behaviors: list() = ElementData["Behaviors"]
+        self.ImageNames: list = ElementData["Images"]
+        self.Images: list = Util.LoadImages(self.ImageNames)
+        self.CurrentImageIndex: int = 0
+        self.Behaviors: list = ElementData["Behaviors"]
 
 
     @staticmethod
