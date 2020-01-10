@@ -36,6 +36,8 @@ class ScreenPlaceholder:
         self.X: int = int(GV.ScreenWidth * self.XPercent / 100)
         self.YPercent: int = PlaceholderData["Y"]
         self.Y: int = int(GV.ScreenHeight * self.YPercent / 100)
+        self.SpriteWidth: int = 0
+        self.SpriteHeight: int = 0
 
 
     @staticmethod

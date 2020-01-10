@@ -10,7 +10,7 @@ ScreenFormats: dict = {
     "HD": (1280, 720),
     "HD+": (1600, 900),
     "FullHD": (1920, 1080)}
-DefaultScreenFormat: str = "qHD"
+DefaultScreenFormat: str = "HD"
 ScreenWidth: int = 0
 ScreenHeight: int = 0
 # some colors

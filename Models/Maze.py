@@ -1,5 +1,7 @@
 import os
 import random
+import pygame
+import Utilities.GlobalVariables as GV
 from Models.MazeElement import MazeElement
 
 class Maze:
@@ -10,6 +12,7 @@ class Maze:
     """
 
     # Class properties
+    # file data
     FilePath: str 
     FileName: str 
     # stores the maze structure in 3 layers (2 dimensional lists)
@@ -22,6 +25,13 @@ class Maze:
     Elements: list = []
     # Characters acting in the maze
     Characters: list = []
+    # Image data
+    MapSpriteWidth: int = 0
+    MapSpriteHeight: int = 0
+    ObjectSpriteWidth: int = 0
+    ObjectSpriteHeight: int = 0
+    CharacterSpriteWidth: int = 0
+    CharacterSpriteHeight: int = 0
 
 
     @classmethod
@@ -46,6 +56,14 @@ class Maze:
         MazeElement.LoadElementsFromFile(Maze)
         # Load maze from text file
         Maze.LoadMapFromFile()
+
+        # Define sprite sizes
+        cls.MapSpriteWidth = int(GV.MapPlaceholder.Width / len(cls.MapLayer[0])) 
+        cls.MapSpriteHeight = int(GV.MapPlaceholder.Height / len(cls.MapLayer)) 
+        cls.ObjectSpriteWidth = int(GV.MapPlaceholder.Width / len(cls.MapLayer[0]) * .6)
+        cls.ObjectSpriteHeight = int(GV.MapPlaceholder.Height / len(cls.MapLayer) * .6)
+        cls.CharacterSpriteWidth = int(GV.MapPlaceholder.Width / len(cls.MapLayer[0]) * .8)
+        cls.CharacterSpriteHeight = int(GV.MapPlaceholder.Height / len(cls.MapLayer) * .8)
 
         # Put objects at random positions
         Maze.PlaceObjectsAtRandomPositions()
@@ -103,12 +121,12 @@ class Maze:
             if("Pick" in CurrentObject.Behaviors):
                 # the current object is pickable
                 # draw random coordinates in maze limits
-                ObjectX: int = random.randint(0, len(cls.MapLayer)-1)
-                ObjectY: int = random.randint(0, len(cls.MapLayer[0])-1)
+                ObjectX: int = random.randint(0, len(cls.MapLayer) - 1)
+                ObjectY: int = random.randint(0, len(cls.MapLayer[0]) - 1)
                 while(cls.MapLayer[ObjectY][ObjectX].Name != "Sol"):
                     # do it again until random position is ground
-                    ObjectX = random.randint(0, len(cls.MapLayer)-1)
-                    ObjectY = random.randint(0, len(cls.MapLayer[0])-1)
+                    ObjectX = random.randint(0, len(cls.MapLayer) - 1)
+                    ObjectY = random.randint(0, len(cls.MapLayer[0]) - 1)
                 # place current object at this position (replace the ground with it)
                 cls.ObjectLayer[ObjectY][ObjectX] = CurrentObject
 
@@ -120,15 +138,41 @@ class Maze:
             Including player
         """
 
-        # Prints a blank line
-        print()
+        for Y in range(0, len(cls.MapLayer)):
+            for X in range(0, len(cls.MapLayer[0])):
+                # draw map sprite
+                MapImage = cls.MapLayer[Y][X].Images[cls.MapLayer[Y][X].CurrentImageIndex]
+                MapImage = pygame.transform.scale(
+                    MapImage, 
+                    (cls.MapSpriteWidth, cls.MapSpriteHeight))
+                GV.Screen.blit(
+                    MapImage, 
+                    (GV.MapPlaceholder.X + X * cls.MapSpriteWidth, 
+                    GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight))
+                # draw object sprite
+                if(cls.ObjectLayer[Y][X] != None):
+                    ObjectImage = cls.ObjectLayer[Y][X].Images[cls.ObjectLayer[Y][X].CurrentImageIndex]
+                    ObjectImage = pygame.transform.scale(
+                        ObjectImage, 
+                        (cls.ObjectSpriteWidth, cls.ObjectSpriteHeight))
+                    GV.Screen.blit(
+                        ObjectImage, 
+                        (GV.MapPlaceholder.X + X * cls.MapSpriteWidth + int((cls.MapSpriteWidth - cls.ObjectSpriteWidth) / 2), 
+                        GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight + int((cls.MapSpriteHeight - cls.ObjectSpriteHeight) / 2))) 
+                # draw character sprite
+                if(cls.CharacterLayer[Y][X] != None):
+                    CharacterImage = cls.CharacterLayer[Y][X].Images[cls.CharacterLayer[Y][X].CurrentImageIndex]
+                    CharacterImage = pygame.transform.scale(
+                        CharacterImage, 
+                        (cls.CharacterSpriteWidth, cls.CharacterSpriteHeight))
+                    GV.Screen.blit(
+                        CharacterImage, 
+                        (GV.MapPlaceholder.X + X * cls.MapSpriteWidth + int((cls.MapSpriteWidth - cls.CharacterSpriteWidth) / 2), 
+                        GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight + int((cls.MapSpriteHeight - cls.CharacterSpriteHeight) / 2))) 
 
-        # With simple loop (gives only the content)
-        # For each line (Y) in Maze
-        for Line in cls.MapLayer:
-            # For each character (X) in line
-            for Column in Line:
-                # Print current maze element at Y, X without jumping a line
-                print(Column, end="")
-            # Jump a line for new Y
-            print()
+        # update screen
+        pygame.display.update()
+
+        # print("Taille de la carte en pixels : {} x {}".format(GV.MapPlaceholder.Width, GV.MapPlaceholder.Height))
+        # print("Taille d'un sprite en pixels : {} x {}".format(cls.MapSpriteWidth, cls.MapSpriteHeight))
+        # print("Taille de la carte en cases : {} x {}".format(len(cls.MapLayer[0]), len(cls.MapLayer)))

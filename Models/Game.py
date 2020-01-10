@@ -23,11 +23,9 @@ class Game:
             Initialize game and show initial message
         """
 
-        # 1) Initialize screen
+        # 1) Initialize data
+        # Initialize screen
         cls.InitializeScreen()
-
-        # 2) Initialize data
-
         # Initialize maze
         Maze.Initialize()
         # Load characters from json file
@@ -36,6 +34,10 @@ class Game:
         #Player.GetPlayerData()
         # Place player in maze
         cls.Player.PlaceInMaze(Maze)
+
+        # 2) Draw screen
+        # Draw game screen
+        cls.DrawGameScreen()
         # Draw maze on screen
         Maze.DrawOnScreen()
 
@@ -62,8 +64,25 @@ class Game:
             next(SP for SP in ScreenPlaceholders if SP["Name"] == "Légende"))
         GV.Placeholders.append(GV.DialogPlaceholder)
 
+
+    @classmethod
+    def DrawGameScreen(cls):
+        """ 
+            Draw game screen
+        """
+
         # Draw each placeholder on screen
         for CurrentPH in GV.Placeholders:
+            if(CurrentPH.Name == "Plan"):
+                # adjust map placeholder size and position according to map size
+                CurrentPH.SpriteWidth = Maze.MapSpriteWidth
+                CurrentPH.SpriteHeight = Maze.MapSpriteHeight
+                NewWidth = Maze.MapSpriteWidth * len(Maze.MapLayer[0])
+                NewHeight = Maze.MapSpriteHeight * len(Maze.MapLayer)
+                CurrentPH.X = int((CurrentPH.Width - NewWidth) / 2)
+                CurrentPH.Y = int((CurrentPH.Height - NewHeight) / 2)
+                CurrentPH.Width = min(CurrentPH.Width, NewWidth)
+                CurrentPH.Height = min(CurrentPH.Height, NewHeight)
             if(CurrentPH.Background != ""):
                 # if placeholder has a background image
                 # get image
@@ -110,8 +129,28 @@ class Game:
         
         # Do this until end of game is triggered
         while not EndOfGame:
-            # Wait for a player action
-            PlayerAction: str = Character.WaitForAction(cls.Player)
-            # Do action
-            EndOfGame = cls.Player.ExecuteAction(PlayerAction, Maze)
+
+            dt = GV.Clock.tick(GV.FPS) / 1000 
+
+            # PyGame event loop
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    # if game exists (user click on red cross in upper right)
+                    EndOfGame = True
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        EndOfGame = True
+                    # elif event.key == pygame.K_w or event.key == pygame.K_UP:
+                    #     player.velocity[1] = -200 * dt  # 200 pixels per second
+                    # elif event.key == pygame.K_x or event.key == pygame.K_DOWN:
+                    #     player.velocity[1] = 200 * dt
+                    # elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    #     player.velocity[0] = -200 * dt
+                    # elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    #     player.velocity[0] = 200 * dt
+
+            # # Wait for a player action
+            # PlayerAction: str = Character.WaitForAction(cls.Player)
+            # # Do action
+            # EndOfGame = cls.Player.ExecuteAction(PlayerAction, Maze)
 

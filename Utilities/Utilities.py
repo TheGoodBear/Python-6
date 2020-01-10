@@ -24,16 +24,17 @@ def LoadImages(ImageNames: str) -> list:
     # for each image in ImageNames
     for CurrentImage in ImageNames:
         try:
-            MyImagePath = GV.GraphicResourcePath + CurrentImage + GV.ImageExtension
             MyImage = None
             if not CurrentImage.endswith("*"):
                 # Image has a specific file name
+                MyImagePath = GV.GraphicResourcePath + CurrentImage + GV.ImageExtension
                 MyImage = GetImage(MyImagePath)
                 # GV.Screen.blit(MyImage, (20, 20))
                 # pygame.display.update()
             else:
                 # Image is choosen randomly among all files with matching starting names
-                MyImage = GetImage(GV.GraphicResourcePath + "Scroll" + GV.ImageExtension)
+                MyImagePath = GV.GraphicResourcePath + CurrentImage[:len(CurrentImage)-1] + "1" + GV.ImageExtension
+                MyImage = GetImage(MyImagePath)
                 # GV.Screen.blit(MyImage, (20, 20))
                 # pygame.display.update()
             
