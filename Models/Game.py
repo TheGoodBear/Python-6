@@ -37,7 +37,7 @@ class Game:
 
         # 2) Draw screen
         # Draw game screen
-        cls.DrawGameScreen()
+        ScreenPlaceholder.DrawPlaceholdersOnScreen(Maze)
         # Draw maze on screen
         Maze.DrawOnScreen()
 
@@ -55,50 +55,14 @@ class Game:
         ScreenPlaceholders = ScreenPlaceholder.LoadPlaceholdersFromFile()
         # Instantiate each placeholder and add it to list of ScreenPlaceholder objects
         GV.MapPlaceholder = ScreenPlaceholder(
-            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Plan"))
+            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Map"))
         GV.Placeholders.append(GV.MapPlaceholder)
         GV.BackpackPlaceholder = ScreenPlaceholder(
-            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Sac"))
+            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Backpack"))
         GV.Placeholders.append(GV.BackpackPlaceholder)
         GV.DialogPlaceholder = ScreenPlaceholder(
-            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Légende"))
+            next(SP for SP in ScreenPlaceholders if SP["Name"] == "Dialog"))
         GV.Placeholders.append(GV.DialogPlaceholder)
-
-
-    @classmethod
-    def DrawGameScreen(cls):
-        """ 
-            Draw game screen
-        """
-
-        # Draw each placeholder on screen
-        for CurrentPH in GV.Placeholders:
-            if(CurrentPH.Name == "Plan"):
-                # adjust map placeholder size and position according to map size
-                CurrentPH.SpriteWidth = Maze.MapSpriteWidth
-                CurrentPH.SpriteHeight = Maze.MapSpriteHeight
-                NewWidth = Maze.MapSpriteWidth * len(Maze.MapLayer[0])
-                NewHeight = Maze.MapSpriteHeight * len(Maze.MapLayer)
-                CurrentPH.X = int((CurrentPH.Width - NewWidth) / 2)
-                CurrentPH.Y = int((CurrentPH.Height - NewHeight) / 2)
-                CurrentPH.Width = min(CurrentPH.Width, NewWidth)
-                CurrentPH.Height = min(CurrentPH.Height, NewHeight)
-            if(CurrentPH.Background != ""):
-                # if placeholder has a background image
-                # get image
-                BackgroundImage = Util.GetImage(
-                    GV.GraphicResourcePath + CurrentPH.Background + GV.ImageExtension)
-                # scale image
-                BackgroundImage = pygame.transform.scale(
-                    BackgroundImage, 
-                    (CurrentPH.Width, CurrentPH.Height))
-                # draw it
-                GV.Screen.blit(
-                    BackgroundImage, 
-                    (CurrentPH.X, CurrentPH.Y))
-        
-        # update screen to show images
-        pygame.display.update()
 
 
     @classmethod
@@ -109,9 +73,6 @@ class Game:
             :param arg1: The maze
             :type arg1: Maze
         """
-
-        # Draw screen background
-
 
         # Show initial message
         print(

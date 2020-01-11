@@ -1,10 +1,28 @@
 Screen data file contains placeholders for view elements 
 
 Each placeholder has the following properties :
-    Name (string)       : placeholder friendly name (legend)
-    Icon (string)       : name of an icon file in Resources folder
-    Background (string) : name of a background image in Resources folder
-    Width (integer      : width in screen percent
-    Height (integer)    : height in screen percent
-    X (integer)         : top-left coordinate on horizontal axis in screen percent
-    Y (integer)         : top-left coordinate on vertical axis in screen percent
+    Name (str)              : placeholder unique name
+    Width (int)             : in screen percent
+    Height (int)            : in screen percent
+    X (int)                 : position in screen percent (left)
+    Y (int)                 : position in screen percent (top)
+    AdjustOnScreen (bool)   : if position must be adjusted (centered) after all sprites position are calculated
+    Background (str)        : name of a background image in Resources folder
+    BackgroundRepeatX (int) : how many times background is repeated on horizontal axis (automatically sized)
+    BackgroundRepeatY (int) : how many times background is repeated on vertical axis (automatically sized)
+    Icon (str)              : name of an icon file in Resources folder
+    IconWidth (int)         : in screen percent
+    IconHeight (int)        : in screen percent
+    IconX (int)             : position in screen percent (left)
+    IconY (int)             : position in screen percent (top)
+    Legend (str)            : placeholder friendly name
+    LegendFontName (str)    : font name
+    LegendFontSize (int)    : font size
+    LegendFontBold (bool)   : if font is bold
+    LegendFontColor (tuple) : tuple of RGB color
+    LegendX (int)           : position in screen percent (left)
+    LegendY (int)           : position in screen percent (top)
+    TextFontName (str)      : font name
+    TextFontSize (int)      : font size
+    TextX (int)             : position in screen percent (left)
+    TextY (int)             : position in screen percent (top)

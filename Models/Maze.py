@@ -113,7 +113,7 @@ class Maze:
     @classmethod
     def PlaceObjectsAtRandomPositions(cls):
         """ 
-            Place all objects from dictionary at random positions in maze
+            Place all objects at random positions in maze
         """
 
         # Browse every maze element
@@ -123,7 +123,8 @@ class Maze:
                 # draw random coordinates in maze limits
                 ObjectX: int = random.randint(0, len(cls.MapLayer) - 1)
                 ObjectY: int = random.randint(0, len(cls.MapLayer[0]) - 1)
-                while(cls.MapLayer[ObjectY][ObjectX].Name != "Sol"):
+                while("Block" in cls.MapLayer[ObjectY][ObjectX].Behaviors
+                    or cls.ObjectLayer[ObjectY][ObjectX] != None):
                     # do it again until random position is ground
                     ObjectX = random.randint(0, len(cls.MapLayer) - 1)
                     ObjectY = random.randint(0, len(cls.MapLayer[0]) - 1)

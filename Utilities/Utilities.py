@@ -14,10 +14,6 @@ def LoadImages(ImageNames: str) -> list:
         :return: The list of all images
         :rtype: list()
     """
-    # MyImagePath = GlobalVariables.GraphicResourcePath + "Backpack" + GlobalVariables.ImageExtension
-    # MyImage = pygame.image.load(MyImagePath)
-    # GlobalVariables.Screen.blit(MyImage, (20, 20))
-    # pygame.display.update()
 
     Images: list = []
 
@@ -29,14 +25,10 @@ def LoadImages(ImageNames: str) -> list:
                 # Image has a specific file name
                 MyImagePath = GV.GraphicResourcePath + CurrentImage + GV.ImageExtension
                 MyImage = GetImage(MyImagePath)
-                # GV.Screen.blit(MyImage, (20, 20))
-                # pygame.display.update()
             else:
                 # Image is choosen randomly among all files with matching starting names
                 MyImagePath = GV.GraphicResourcePath + CurrentImage[:len(CurrentImage)-1] + "1" + GV.ImageExtension
                 MyImage = GetImage(MyImagePath)
-                # GV.Screen.blit(MyImage, (20, 20))
-                # pygame.display.update()
             
             # add image to list
             Images.append(MyImage)

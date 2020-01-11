@@ -18,7 +18,7 @@
         "Symbol": "E",
         "Images": ["CaveIn"],
         "RandomImage": false,
-        "Behaviors": ["Walk"]
+        "Behaviors": ["Block"]
     },
     {
         "Name": "Sortie",
