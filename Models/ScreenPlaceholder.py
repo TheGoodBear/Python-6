@@ -118,6 +118,8 @@ class ScreenPlaceholder:
                 CurrentPH.Y = int((CurrentPH.Height - NewHeight) / 2)
                 CurrentPH.Width = min(CurrentPH.Width, NewWidth)
                 CurrentPH.Height = min(CurrentPH.Height, NewHeight)
+                CurrentPH.BackgroundWidth = CurrentPH.Width
+                CurrentPH.BackgroundHeight = CurrentPH.Height
             if(CurrentPH.Background != ""):
                 # if placeholder has a background image
                 # get image
