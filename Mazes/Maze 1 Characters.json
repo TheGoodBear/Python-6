@@ -5,6 +5,7 @@
         "RandomImage": false,
         "Behaviors": ["Player"],
         "Backpack": [],
+        "BackpackCapacity": 10,
         "X": 0,
         "Y": 0,
         "Status": ["Alive"]

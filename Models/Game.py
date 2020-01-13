@@ -91,27 +91,10 @@ class Game:
         # Do this until end of game is triggered
         while not EndOfGame:
 
-            dt = GV.Clock.tick(GV.FPS) / 1000 
+            # Define action speed (interval between 2 loops)
+            ActionSpeed = GV.Clock.tick(GV.FPS) / 1000 
 
-            # PyGame event loop
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    # if game exists (user click on red cross in upper right)
-                    EndOfGame = True
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        EndOfGame = True
-                    # elif event.key == pygame.K_w or event.key == pygame.K_UP:
-                    #     player.velocity[1] = -200 * dt  # 200 pixels per second
-                    # elif event.key == pygame.K_x or event.key == pygame.K_DOWN:
-                    #     player.velocity[1] = 200 * dt
-                    # elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                    #     player.velocity[0] = -200 * dt
-                    # elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    #     player.velocity[0] = 200 * dt
-
-            # # Wait for a player action
-            # PlayerAction: str = Character.WaitForAction(cls.Player)
-            # # Do action
-            # EndOfGame = cls.Player.ExecuteAction(PlayerAction, Maze)
-
+            # Wait for a player action
+            PlayerAction: str = Character.WaitForAction(cls.Player)
+            # Do action
+            EndOfGame = cls.Player.ExecuteAction(PlayerAction, Maze)

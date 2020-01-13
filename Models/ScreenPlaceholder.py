@@ -123,8 +123,7 @@ class ScreenPlaceholder:
             if(CurrentPH.Background != ""):
                 # if placeholder has a background image
                 # get image
-                BackgroundImage = Util.GetImage(
-                    GV.GraphicResourcePath + CurrentPH.Background + GV.ImageExtension)
+                BackgroundImage = Util.GetImage(CurrentPH.Background)
                 # scale image
                 BackgroundImage = pygame.transform.scale(
                     BackgroundImage, 
@@ -139,8 +138,7 @@ class ScreenPlaceholder:
             if(CurrentPH.Icon != ""):
                 # if placeholder has an icon
                 # get image
-                IconImage = Util.GetImage(
-                    GV.GraphicResourcePath + CurrentPH.Icon + GV.ImageExtension)
+                IconImage = Util.GetImage(CurrentPH.Icon)
                 # scale image
                 IconImage = pygame.transform.scale(
                     IconImage, 

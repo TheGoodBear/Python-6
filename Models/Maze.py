@@ -136,7 +136,7 @@ class Maze:
     def DrawOnScreen(cls):
         """ 
             Draw maze in console
-            Including player
+            (all layers)
         """
 
         for Y in range(0, len(cls.MapLayer)):
@@ -177,3 +177,52 @@ class Maze:
         # print("Taille de la carte en pixels : {} x {}".format(GV.MapPlaceholder.Width, GV.MapPlaceholder.Height))
         # print("Taille d'un sprite en pixels : {} x {}".format(cls.MapSpriteWidth, cls.MapSpriteHeight))
         # print("Taille de la carte en cases : {} x {}".format(len(cls.MapLayer[0]), len(cls.MapLayer)))
+
+
+    @classmethod
+    def DrawElementsAtPosition(
+        cls,
+        X: int,
+        Y: int):
+        """ 
+            Draw maze elements at specified position
+            (all layers)
+    
+            :param arg1: X coordinate
+            :type arg1: integer
+            :param arg2: Y coordinate
+            :type arg2: integer
+        """
+
+        # draw map sprite
+        MapImage = cls.MapLayer[Y][X].Images[cls.MapLayer[Y][X].CurrentImageIndex]
+        MapImage = pygame.transform.scale(
+            MapImage, 
+            (cls.MapSpriteWidth, cls.MapSpriteHeight))
+        GV.Screen.blit(
+            MapImage, 
+            (GV.MapPlaceholder.X + X * cls.MapSpriteWidth, 
+            GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight))
+        # draw object sprite
+        if(cls.ObjectLayer[Y][X] != None):
+            ObjectImage = cls.ObjectLayer[Y][X].Images[cls.ObjectLayer[Y][X].CurrentImageIndex]
+            ObjectImage = pygame.transform.scale(
+                ObjectImage, 
+                (cls.ObjectSpriteWidth, cls.ObjectSpriteHeight))
+            GV.Screen.blit(
+                ObjectImage, 
+                (GV.MapPlaceholder.X + X * cls.MapSpriteWidth + int((cls.MapSpriteWidth - cls.ObjectSpriteWidth) / 2), 
+                GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight + int((cls.MapSpriteHeight - cls.ObjectSpriteHeight) / 2))) 
+        # draw character sprite
+        if(cls.CharacterLayer[Y][X] != None):
+            CharacterImage = cls.CharacterLayer[Y][X].Images[cls.CharacterLayer[Y][X].CurrentImageIndex]
+            CharacterImage = pygame.transform.scale(
+                CharacterImage, 
+                (cls.CharacterSpriteWidth, cls.CharacterSpriteHeight))
+            GV.Screen.blit(
+                CharacterImage, 
+                (GV.MapPlaceholder.X + X * cls.MapSpriteWidth + int((cls.MapSpriteWidth - cls.CharacterSpriteWidth) / 2), 
+                GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight + int((cls.MapSpriteHeight - cls.CharacterSpriteHeight) / 2))) 
+
+        # update screen
+        pygame.display.update()

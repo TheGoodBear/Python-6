@@ -4,6 +4,7 @@ import os
 import pygame
 import Utilities.GlobalVariables as GV
 
+
 def LoadImages(ImageNames: str) -> list:
     """
         Load images from resources and returns them
@@ -23,12 +24,11 @@ def LoadImages(ImageNames: str) -> list:
             MyImage = None
             if not CurrentImage.endswith("*"):
                 # Image has a specific file name
-                MyImagePath = GV.GraphicResourcePath + CurrentImage + GV.ImageExtension
-                MyImage = GetImage(MyImagePath)
+                MyImage = GetImage(CurrentImage)
             else:
                 # Image is choosen randomly among all files with matching starting names
-                MyImagePath = GV.GraphicResourcePath + CurrentImage[:len(CurrentImage)-1] + "1" + GV.ImageExtension
-                MyImage = GetImage(MyImagePath)
+                MyImageName = CurrentImage[:len(CurrentImage)-1] + "1"
+                MyImage = GetImage(MyImageName)
             
             # add image to list
             Images.append(MyImage)
@@ -41,7 +41,7 @@ def LoadImages(ImageNames: str) -> list:
     return Images
 
 
-def GetImage(ImagePath: str):
+def GetImage(ImageName: str):
     """
         Get an image from the application's library
             if the image exists in the library simply return it
@@ -55,16 +55,17 @@ def GetImage(ImagePath: str):
     """
 
     # Get from library
-    MyImage = GV.ImageLibrary.get(ImagePath)
+    MyImage = GV.ImageLibrary.get(ImageName)
 
     if MyImage == None:
         # if image does not exist in library
         # create generic path for all OS
-        GenericPath = ImagePath.replace('/', os.sep).replace('\\', os.sep)
+        ImagePath = GV.GraphicResourcePath + ImageName + GV.ImageExtension
+        ImagePath = ImagePath.replace('/', os.sep).replace('\\', os.sep)
         # load image
-        MyImage = pygame.image.load(GenericPath)
+        MyImage = pygame.image.load(ImagePath)
         # store it in library
-        GV.ImageLibrary[ImagePath] = MyImage
+        GV.ImageLibrary[ImageName] = MyImage
 
     # return image
     return MyImage
