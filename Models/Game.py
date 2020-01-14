@@ -31,16 +31,15 @@ class Game:
         # Load characters from json file
         cls.Player = Character.LoadCharactersFromFile(Maze)
         # Ask for player data
-        #Player.GetPlayerData()
+        cls.Player.GetPlayerData()
         # Place player in maze
-        cls.Player.PlaceInMaze(Maze)
+        cls.Player.MoveInMaze(Maze)
 
         # 2) Draw screen
         # Draw game screen
         ScreenPlaceholder.DrawPlaceholdersOnScreen(Maze)
         # Draw maze on screen
         Maze.DrawOnScreen()
-
 
         # 3) Start game
         cls.Start(Maze)
@@ -85,16 +84,17 @@ class Game:
 
         # Game loop
 
-        # Variable for end of game
+        # define action speed (interval between 2 loops)
+        ActionSpeed = GV.Clock.tick(GV.FPS) / 1000 
+        # variable for end of game
         EndOfGame: bool = False
         
-        # Do this until end of game is triggered
+        # do this until end of game is triggered
         while not EndOfGame:
 
-            # Define action speed (interval between 2 loops)
-            ActionSpeed = GV.Clock.tick(GV.FPS) / 1000 
+            # get a player action
+            PlayerAction: str = Character.GetAction(cls.Player)
 
-            # Wait for a player action
-            PlayerAction: str = Character.WaitForAction(cls.Player)
-            # Do action
-            EndOfGame = cls.Player.ExecuteAction(PlayerAction, Maze)
+            if(PlayerAction != ""):
+                # Do action
+                EndOfGame = cls.Player.ExecuteAction(PlayerAction, Maze)

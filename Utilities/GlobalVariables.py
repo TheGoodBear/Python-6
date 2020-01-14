@@ -21,6 +21,10 @@ Placeholders: list = []
 MapPlaceholder = None
 BackpackPlaceholder = None
 DialogPlaceholder = None
+MapSpriteScaleInMaze = 1.00
+CharacterSpriteScaleInMaze = 0.80
+ObjectSpriteScaleInMaze = 0.60
+ObjectSpriteScaleInBackpack = 0.70
 
 # Game data
 Clock = None

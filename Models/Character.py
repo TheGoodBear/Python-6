@@ -99,12 +99,12 @@ class Character:
             .format(self.Name))
 
 
-    def PlaceInMaze(self,
+    def MoveInMaze(self,
         Maze,
         CharacterNewX: int = 0,
         CharacterNewY: int = 0):
         """ 
-            Place character in maze
+            Move character in maze (or place him if not already done)
 
             :param arg1: The maze
             :type arg1: Maze
@@ -152,16 +152,23 @@ class Character:
 
         else:
             # Character is already in maze
+            
             # replace actual character position with nothing
             Maze.CharacterLayer[self.Y][self.X] = None
             # redraw maze at old character position
             Maze.DrawElementsAtPosition(self.X, self.Y)
-            # and place character to new position
-            Maze.CharacterLayer[CharacterNewY][CharacterNewX] = self
+            
+            # assign new coordinates to character
+            self.X = CharacterNewX
+            self.Y = CharacterNewY
+            # place character to new position
+            Maze.CharacterLayer[self.Y][self.X] = self
+            # redraw maze at new character position
+            Maze.DrawElementsAtPosition(self.X, self.Y)
 
 
     @staticmethod
-    def WaitForAction(Character) -> str:
+    def GetAction(Character) -> str:
         """ 
             Wait player to make an action
 
@@ -177,6 +184,8 @@ class Character:
             # get player input
             if event.type == pygame.QUIT:
                 # if game exits (user click on red cross in upper right)
+                print("Tu choisis de quitter le labyrinthe, tu as perdu !\n")
+                return "QuitGame"
                 EndOfGame = True
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -195,6 +204,9 @@ class Character:
                 elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     print("Tu te déplaces vers la droite...")
                     return "MoveRight"
+
+        # No action done
+        return ""
 
 
     def ExecuteAction(self,     
@@ -231,10 +243,10 @@ class Character:
 
 
         # Check if new coordinates are valid (into maze limits)
-        if (CharacterNewX<0 or 
-            CharacterNewX>len(Maze.MapLayer[0]) or 
-            CharacterNewY<0 or 
-            CharacterNewY>len(Maze.MapLayer)):
+        if (CharacterNewX < 0 or 
+            CharacterNewX > len(Maze.MapLayer[0]) or 
+            CharacterNewY < 0 or 
+            CharacterNewY > len(Maze.MapLayer)):
             # if character is out of maze limits
             print("Tu es en dehors des limites, tu ne peux pas aller par là !")
             return False
@@ -245,51 +257,57 @@ class Character:
         CurrentCharacter = Maze.CharacterLayer[CharacterNewY][CharacterNewX]
 
         # Check current map/object/character behavior or name
-        if (CurrentMapElement.Name == "Sortie"):
+        if (CurrentMapElement.Name.lower() == "sortie"):
             # if exit is reached
-            # check if player has all needed objects
-            MissingObjects: int = 0
-            # for each element in maze
-            for Element in Maze.Elements:
-                if ("Combine" in Element.Behaviors
-                    and not Element in self.Backpack):
-                    # this element can be combined but is not in player backpack
-                    MissingObjects += 1
-            if (MissingObjects == 0):
-                # character has all objects
-                # replace character in maze
-                self.PlaceInMaze(Maze, CharacterNewX, CharacterNewY)
-                # assign new coordinates to character
-                self.X = CharacterNewX
-                self.Y = CharacterNewY
-                # # redraw maze with new character position
-                # Maze.DrawOnScreen()
-                # change exit image
-                CurrentMapElement.CurrentImageIndex = 1
-                # redraw maze at new character position
-                Maze.DrawElementsAtPosition(self.X, self.Y)
-                # say victory
-                print(
-                    "\nOuiiii, bravo {0}, tu as trouvé la sortie et tu avais tous les objets nécessaires !\n"
-                    .format(self.Name))
-                # and return game end
-                return True
+            # check door status
+            if (CurrentMapElement.Behaviors[CurrentMapElement.CurrentBehaviorIndex] == "close"):
+                # door is closed
+                # check if player has all needed objects
+                MissingObjects: int = 0
+                # for each element in maze
+                for Element in Maze.Elements:
+                    if ("combine" in Element.Behaviors
+                        and not Element in self.Backpack):
+                        # this element can be combined but is not in player backpack
+                        MissingObjects += 1
+                if (MissingObjects == 0):
+                    # player has all objects
+                    # change exit image and behavior
+                    CurrentMapElement.CurrentImageIndex = 1
+                    CurrentMapElement.CurrentBehaviorIndex = 1
+                    # redraw maze at new character position but without moving him
+                    Maze.DrawElementsAtPosition(CharacterNewX, CharacterNewY)
+                    # say door opens
+                    print(
+                        "\nOuiiii, tu as trouvé la sortie et tu as tous les objets nécessaires, la porte s'ouvre !\n"
+                        .format(self.Name))
+
+                else:
+                    # some objects are missing
+                    # say how many
+                    print(
+                        "\nHa, tu as bien trouvé la sortie mais il te manque encore {0} objet(s) pour ouvrir la porte..."
+                        .format(MissingObjects))
             else:
-                # some objects are missing
-                # say how many
-                print(
-                    "\nHa, tu as bien trouvé la sortie mais il te manque encore {0} objet(s) pour ouvrir la porte..."
-                    .format(MissingObjects))
+                # door is opened
+                    # move character in maze
+                    self.MoveInMaze(Maze, CharacterNewX, CharacterNewY)
+                    # say victory
+                    print(
+                        "\nBravo {0}, tu es sorti victorieux du labyrinthe :-)\n"
+                        .format(self.Name))
+                    # and return game end
+                    return True
         
-        elif ("Block" in CurrentMapElement.Behaviors):
+        elif ("block" in CurrentMapElement.Behaviors):
             # if there is an obstacle, say it
             print("Oups un mur, tu ne peux pas bouger !")
-            # # and redraw maze
-            # Maze.DrawOnScreen()
         
-        elif (CurrentObject != None and "Pick" in CurrentObject.Behaviors):
+        elif (CurrentObject != None and "pick" in CurrentObject.Behaviors):
             # if there is an object
-            if(len(self.Backpack) < self.BackpackCapacity):
+            # open chest and get object image in place
+            CurrentObject.CurrentImageIndex = 1
+            if (len(self.Backpack) < self.BackpackCapacity):
                 # if backpack is not full
                 # say it
                 print(
@@ -307,21 +325,13 @@ class Character:
                 print(
                     "Tu as trouvé un(e) {0} mais ton sac est déjà plein...\n"
                     .format(CurrentObject.Name))
-            # assign new coordinates to character
-            self.X = CharacterNewX
-            self.Y = CharacterNewY
-            # redraw maze at new character position
-            Maze.DrawElementsAtPosition(self.X, self.Y)
+            # move character in maze
+            self.MoveInMaze(Maze, CharacterNewX, CharacterNewY)
             
         else:
             # if nothing special
-            # replace character in maze
-            self.PlaceInMaze(Maze,CharacterNewX,CharacterNewY)
-            # assign new coordinates to character
-            self.X = CharacterNewX
-            self.Y = CharacterNewY
-            # redraw maze at new character position
-            Maze.DrawElementsAtPosition(self.X, self.Y)
+            # move character in maze
+            self.MoveInMaze(Maze, CharacterNewX, CharacterNewY)
 
         # Game is not yet ended    
         return False
@@ -335,20 +345,26 @@ class Character:
         # for each item in backpack
         for ElementIndex, Element in enumerate(self.Backpack):
             # get image
-            # ElementImage = Util.GetImage(Element.Images[Element.CurrentImageIndex])
             ElementImage = Element.Images[Element.CurrentImageIndex]
+            # special cases to manage backpack icon
+            VisualElementIndex = ElementIndex
+            if (ElementIndex < 2):
+                VisualElementIndex += 2
+            else:
+                VisualElementIndex += 4
             # scale image
             ElementImage = pygame.transform.scale(
                 ElementImage, 
-                (int(GV.BackpackPlaceholder.BackgroundWidth * .8), 
-                int(GV.BackpackPlaceholder.BackgroundHeight * .8)))
+                (int(GV.BackpackPlaceholder.BackgroundWidth * GV.ObjectSpriteScaleInBackpack), 
+                int(GV.BackpackPlaceholder.BackgroundHeight * GV.ObjectSpriteScaleInBackpack)))
+            # get image position
+            Y = VisualElementIndex // GV.BackpackPlaceholder.BackgroundRepeatX
+            X = VisualElementIndex % GV.BackpackPlaceholder.BackgroundRepeatX
             # draw image
-            Y = ElementIndex // GV.BackpackPlaceholder.BackgroundRepeatX
-            X = ElementIndex % GV.BackpackPlaceholder.BackgroundRepeatX
             GV.Screen.blit(
                 ElementImage, 
-                (GV.BackpackPlaceholder.X + (GV.BackpackPlaceholder.BackgroundWidth * X) + int(GV.BackpackPlaceholder.BackgroundWidth * .1), 
-                GV.BackpackPlaceholder.Y + (GV.BackpackPlaceholder.BackgroundHeight * Y) + int(GV.BackpackPlaceholder.BackgroundHeight * .1)))
+                (GV.BackpackPlaceholder.X + (GV.BackpackPlaceholder.BackgroundWidth * X) + int(GV.BackpackPlaceholder.BackgroundWidth * (1 - GV.ObjectSpriteScaleInBackpack) // 2), 
+                GV.BackpackPlaceholder.Y + (GV.BackpackPlaceholder.BackgroundHeight * Y) + int(GV.BackpackPlaceholder.BackgroundHeight * (1 - GV.ObjectSpriteScaleInBackpack) // 2)))
         
         # update screen to show images
         pygame.display.update()

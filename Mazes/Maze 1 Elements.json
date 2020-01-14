@@ -4,83 +4,83 @@
         "Symbol": " ",
         "Images": ["Empty"],
         "RandomImage": false,
-        "Behaviors": ["Walk"]
+        "Behaviors": ["walk"]
     },
     {
         "Name": "Mur",
         "Symbol": "*",
         "Images": ["Wall*"],
         "RandomImage": true,
-        "Behaviors": ["Block"]
+        "Behaviors": ["block"]
     },
     {
         "Name": "Entrée",
         "Symbol": "E",
         "Images": ["CaveIn"],
         "RandomImage": false,
-        "Behaviors": ["Block"]
+        "Behaviors": ["block"]
     },
     {
         "Name": "Sortie",
         "Symbol": "X",
         "Images": ["DoorClosed", "DoorOpen"],
         "RandomImage": false,
-        "Behaviors": ["Block", "Open"]
+        "Behaviors": ["close", "open"]
     },
     {
         "Name": "Statue de Dragon",
         "Symbol": "",
         "Images": ["Chest*", "StatueDragon"],
         "RandomImage": false,
-        "Behaviors": ["Pick", "Combine"]
+        "Behaviors": ["pick", "combine"]
     },
     {
         "Name": "Statue de Poisson",
         "Symbol": "",
         "Images": ["Chest*", "StatueFish"],
         "RandomImage": false,
-        "Behaviors": ["Pick", "Combine"]
+        "Behaviors": ["pick", "combine"]
     },
     {
         "Name": "Statue d'Oiseau",
         "Symbol": "",
         "Images": ["Chest*", "StatueBird"],
         "RandomImage": false,
-        "Behaviors": ["Pick", "Combine"]
+        "Behaviors": ["pick", "combine"]
     },
     {
         "Name": "Statue d'Éléphant'",
         "Symbol": "",
         "Images": ["Chest*", "StatueElephant"],
         "RandomImage": false,
-        "Behaviors": ["Pick", "Combine"]
+        "Behaviors": ["pick", "combine"]
     },
     {
         "Name": "Miroir",
         "Symbol": "",
         "Images": ["Chest*", "Miror"],
         "RandomImage": false,
-        "Behaviors": ["Pick"]
+        "Behaviors": ["pick"]
     },
     {
         "Name": "Clé dorée",
         "Symbol": "",
         "Images": ["Chest*", "KeyGold"],
         "RandomImage": false,
-        "Behaviors": ["Pick"]
+        "Behaviors": ["pick"]
     },
     {
         "Name": "Clé argentée",
         "Symbol": "",
         "Images": ["Chest*", "KeySilver"],
         "RandomImage": false,
-        "Behaviors": ["Pick"]
+        "Behaviors": ["pick"]
     },
     {
         "Name": "Bouteille",
         "Symbol": "",
         "Images": ["Chest*", "PotionBlue"],
         "RandomImage": false,
-        "Behaviors": ["Pick"]
+        "Behaviors": ["pick"]
     }
 ]

@@ -27,6 +27,7 @@ class MazeElement:
         self.Images: list = Util.LoadImages(self.ImageNames)
         self.CurrentImageIndex: int = 0
         self.Behaviors: list = ElementData["Behaviors"]
+        self.CurrentBehaviorIndex: int = 0
 
 
     @staticmethod

@@ -10,10 +10,12 @@
 #    Symbol (string)             : symbol used in .maz file
 #    Images (list of string)     : images used in game (1 element in list for each possible state, if a name ends with *, choose a random image file which name starts with name minus *)
 #    Behaviors (list of string)  : behaviors of element when encoutered by a character, possible values : 
-#        "walk"    : character can walk on it
-#        "block"   : character cannot pass it
-#        "pick"    : object can be picked up and put in backpack
-#        "combine" : object is part of victory (all combined objects must be found to open exit door)
+#        "walk"     : character can walk on it
+#        "block"    : character cannot pass it
+#        "close"    : character cannot pass it but element can be opened
+#        "open"     : character can walk on it
+#        "pick"     : object can be picked up and put in backpack
+#        "combine"  : object is part of victory (all combined objects must be found to open exit door)
 # For each character in maze :
 #    Name (string)               : friendly name
 #    Images (list of string)     : images used in game (1 element in list for each possible state, if a name ends with *, choose a random image file which name starts with name minus *)

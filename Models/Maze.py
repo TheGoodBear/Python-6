@@ -2,6 +2,7 @@ import os
 import random
 import pygame
 import Utilities.GlobalVariables as GV
+import Utilities.Utilities as Util
 from Models.MazeElement import MazeElement
 
 class Maze:
@@ -58,12 +59,12 @@ class Maze:
         Maze.LoadMapFromFile()
 
         # Define sprite sizes
-        cls.MapSpriteWidth = int(GV.MapPlaceholder.Width / len(cls.MapLayer[0])) 
-        cls.MapSpriteHeight = int(GV.MapPlaceholder.Height / len(cls.MapLayer)) 
-        cls.ObjectSpriteWidth = int(GV.MapPlaceholder.Width / len(cls.MapLayer[0]) * .6)
-        cls.ObjectSpriteHeight = int(GV.MapPlaceholder.Height / len(cls.MapLayer) * .6)
-        cls.CharacterSpriteWidth = int(GV.MapPlaceholder.Width / len(cls.MapLayer[0]) * .8)
-        cls.CharacterSpriteHeight = int(GV.MapPlaceholder.Height / len(cls.MapLayer) * .8)
+        cls.MapSpriteWidth = int(GV.MapPlaceholder.Width / len(cls.MapLayer[0]) * GV.MapSpriteScaleInMaze) 
+        cls.MapSpriteHeight = int(GV.MapPlaceholder.Height / len(cls.MapLayer) * GV.MapSpriteScaleInMaze) 
+        cls.ObjectSpriteWidth = int(GV.MapPlaceholder.Width / len(cls.MapLayer[0]) * GV.ObjectSpriteScaleInMaze)
+        cls.ObjectSpriteHeight = int(GV.MapPlaceholder.Height / len(cls.MapLayer) * GV.ObjectSpriteScaleInMaze)
+        cls.CharacterSpriteWidth = int(GV.MapPlaceholder.Width / len(cls.MapLayer[0]) * GV.CharacterSpriteScaleInMaze)
+        cls.CharacterSpriteHeight = int(GV.MapPlaceholder.Height / len(cls.MapLayer) * GV.CharacterSpriteScaleInMaze)
 
         # Put objects at random positions
         Maze.PlaceObjectsAtRandomPositions()
@@ -92,7 +93,7 @@ class Maze:
                         if (Char != "\n"):
                             # Search in maze elements for matching symbol
                             CurrentElement = MazeElement.GetElement(cls, Symbol=Char)
-                            if(CurrentElement != None):
+                            if (CurrentElement != None):
                                 # If an element was found
                                     # append element
                                     LineData.append(CurrentElement)
@@ -118,12 +119,13 @@ class Maze:
 
         # Browse every maze element
         for CurrentObject in cls.Elements:
-            if("Pick" in CurrentObject.Behaviors):
+            if ("pick" in CurrentObject.Behaviors):
                 # the current object is pickable
                 # draw random coordinates in maze limits
                 ObjectX: int = random.randint(0, len(cls.MapLayer) - 1)
                 ObjectY: int = random.randint(0, len(cls.MapLayer[0]) - 1)
-                while("Block" in cls.MapLayer[ObjectY][ObjectX].Behaviors
+                while ("block" in cls.MapLayer[ObjectY][ObjectX].Behaviors
+                    or "close" in cls.MapLayer[ObjectY][ObjectX].Behaviors
                     or cls.ObjectLayer[ObjectY][ObjectX] != None):
                     # do it again until random position is ground
                     ObjectX = random.randint(0, len(cls.MapLayer) - 1)
@@ -135,12 +137,13 @@ class Maze:
     @classmethod
     def DrawOnScreen(cls):
         """ 
-            Draw maze in console
+            Draw maze
             (all layers)
         """
 
         for Y in range(0, len(cls.MapLayer)):
             for X in range(0, len(cls.MapLayer[0])):
+                
                 # draw map sprite
                 MapImage = cls.MapLayer[Y][X].Images[cls.MapLayer[Y][X].CurrentImageIndex]
                 MapImage = pygame.transform.scale(
@@ -150,6 +153,7 @@ class Maze:
                     MapImage, 
                     (GV.MapPlaceholder.X + X * cls.MapSpriteWidth, 
                     GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight))
+                
                 # draw object sprite
                 if(cls.ObjectLayer[Y][X] != None):
                     ObjectImage = cls.ObjectLayer[Y][X].Images[cls.ObjectLayer[Y][X].CurrentImageIndex]
@@ -160,6 +164,7 @@ class Maze:
                         ObjectImage, 
                         (GV.MapPlaceholder.X + X * cls.MapSpriteWidth + int((cls.MapSpriteWidth - cls.ObjectSpriteWidth) / 2), 
                         GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight + int((cls.MapSpriteHeight - cls.ObjectSpriteHeight) / 2))) 
+                
                 # draw character sprite
                 if(cls.CharacterLayer[Y][X] != None):
                     CharacterImage = cls.CharacterLayer[Y][X].Images[cls.CharacterLayer[Y][X].CurrentImageIndex]
@@ -194,6 +199,15 @@ class Maze:
             :type arg2: integer
         """
 
+        # draw map background (only the square at specified coordinates)
+        BackgroundImage = pygame.transform.scale(
+            Util.GetImage(GV.MapPlaceholder.Background), 
+            (GV.MapPlaceholder.BackgroundWidth, GV.MapPlaceholder.BackgroundHeight))
+        GV.Screen.blit(
+            BackgroundImage, 
+            (GV.MapPlaceholder.X + X * cls.MapSpriteWidth, GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight),
+            (X * cls.MapSpriteWidth, Y * cls.MapSpriteHeight, cls.MapSpriteWidth, cls.MapSpriteHeight))
+        
         # draw map sprite
         MapImage = cls.MapLayer[Y][X].Images[cls.MapLayer[Y][X].CurrentImageIndex]
         MapImage = pygame.transform.scale(
@@ -203,6 +217,7 @@ class Maze:
             MapImage, 
             (GV.MapPlaceholder.X + X * cls.MapSpriteWidth, 
             GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight))
+        
         # draw object sprite
         if(cls.ObjectLayer[Y][X] != None):
             ObjectImage = cls.ObjectLayer[Y][X].Images[cls.ObjectLayer[Y][X].CurrentImageIndex]
@@ -213,6 +228,7 @@ class Maze:
                 ObjectImage, 
                 (GV.MapPlaceholder.X + X * cls.MapSpriteWidth + int((cls.MapSpriteWidth - cls.ObjectSpriteWidth) / 2), 
                 GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight + int((cls.MapSpriteHeight - cls.ObjectSpriteHeight) / 2))) 
+        
         # draw character sprite
         if(cls.CharacterLayer[Y][X] != None):
             CharacterImage = cls.CharacterLayer[Y][X].Images[cls.CharacterLayer[Y][X].CurrentImageIndex]
