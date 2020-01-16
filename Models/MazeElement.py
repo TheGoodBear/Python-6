@@ -1,4 +1,8 @@
-import os
+"""
+    Class
+"""
+
+import sys
 import json
 import Utilities.Utilities as Util
 
@@ -59,7 +63,7 @@ class MazeElement:
             # If there is an OSError exception
             print("\nLes éléments du labyrinthe demandé n'ont pas été trouvés !\n")
             # exit application
-            os._exit(1)
+            sys.exit(1)
 
 
     @staticmethod

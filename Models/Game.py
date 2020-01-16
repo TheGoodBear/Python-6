@@ -1,6 +1,8 @@
-import pygame
+"""
+    Class
+"""
+
 import Utilities.GlobalVariables as GV
-import Utilities.Utilities as Util
 from Models.Character import Character
 from Models.Maze import Maze
 from Models.MazeElement import MazeElement
@@ -19,7 +21,7 @@ class Game:
 
     @classmethod
     def Initialize(cls):
-        """ 
+        """
             Initialize game and show initial message
         """
 
@@ -29,11 +31,11 @@ class Game:
         # Initialize maze
         Maze.Initialize()
         # Load characters from json file
-        cls.Player = Character.LoadCharactersFromFile(Maze)
+        cls.Player = Character.LoadCharactersFromFile()
         # Ask for player data
         cls.Player.GetPlayerData()
         # Place player in maze
-        cls.Player.MoveInMaze(Maze)
+        cls.Player.MoveInMaze()
 
         # 2) Draw screen
         # Draw game screen
@@ -42,11 +44,11 @@ class Game:
         Maze.DrawOnScreen()
 
         # 3) Start game
-        cls.Start(Maze)
+        cls.Start()
 
     @classmethod
     def InitializeScreen(cls):
-        """ 
+        """
             Initialize screen
         """
 
@@ -65,8 +67,8 @@ class Game:
 
 
     @classmethod
-    def Start(cls, Maze):
-        """ 
+    def Start(cls):
+        """
             Give rules to player and start the game
 
             :param arg1: The maze
@@ -75,7 +77,7 @@ class Game:
 
         # Show initial message
         print(
-            "\nTrès bien {0}, ton objectif est de sortir du labyrinthe.".format(cls.Player.Name) + 
+            "\nTrès bien {0}, ton objectif est de sortir du labyrinthe.".format(cls.Player.Name) +
             "\nPour cela il te faudra trouver la sortie et avoir collecté les objets nécessaires à l'ouverture de la porte." + 
             "\nTu es représenté par {0} et la porte de sortie par {1}.".format(cls.Player.ImageNames[0], MazeElement.GetElement(Maze, "Sortie").ImageNames[0]) + 
             "\nÀ chaque tour tu peux effectuer l'une des actions suivantes :" + 
@@ -85,7 +87,7 @@ class Game:
         # Game loop
 
         # define action speed (interval between 2 loops)
-        ActionSpeed = GV.Clock.tick(GV.FPS) / 1000 
+        #ActionSpeed: int = GV.Clock.tick(GV.FPS) // 1000 
         # variable for end of game
         EndOfGame: bool = False
         
@@ -93,8 +95,8 @@ class Game:
         while not EndOfGame:
 
             # get a player action
-            PlayerAction: str = Character.GetAction(cls.Player)
+            PlayerAction: str = Character.GetAction()
 
             if(PlayerAction != ""):
                 # Do action
-                EndOfGame = cls.Player.ExecuteAction(PlayerAction, Maze)
+                EndOfGame = cls.Player.ExecuteAction(PlayerAction)

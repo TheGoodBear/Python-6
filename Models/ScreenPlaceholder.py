@@ -1,4 +1,8 @@
-import os
+"""
+    Class
+"""
+
+import sys
 import json
 import pygame
 import Utilities.GlobalVariables as GV
@@ -52,7 +56,7 @@ class ScreenPlaceholder:
         self.Legend: str = PlaceholderData["Legend"]
         self.LegendFontName: str = PlaceholderData["LegendFontName"]
         self.LegendFontSize: int = PlaceholderData["LegendFontSize"]
-        self.LegendFontBold: string = PlaceholderData["LegendFontBold"]
+        self.LegendFontBold: str = PlaceholderData["LegendFontBold"]
         self.LegendFontColor: tuple = tuple(int(Number) for Number in str(PlaceholderData["LegendFontColor"]).split(","))
         self.LegendXPercent: int = PlaceholderData["LegendX"]
         self.LegendX: int = self.X + (self.Width * self.LegendXPercent // 100)
@@ -94,7 +98,7 @@ class ScreenPlaceholder:
             # If there is an OSError exception
             print("\nLes éléments de l'écran de jeu n'ont pas été trouvés !\n")
             # exit application
-            os._exit(1)
+            sys.exit(1)
 
 
     @staticmethod
@@ -108,7 +112,7 @@ class ScreenPlaceholder:
 
         # Draw each placeholder on screen
         for CurrentPH in GV.Placeholders:
-            if(CurrentPH.AdjustOnScreen == "True"):
+            if (CurrentPH.AdjustOnScreen == "True"):
                 # adjust placeholder size and position according to sprite size
                 CurrentPH.SpriteWidth = Maze.MapSpriteWidth
                 CurrentPH.SpriteHeight = Maze.MapSpriteHeight
@@ -120,7 +124,7 @@ class ScreenPlaceholder:
                 CurrentPH.Height = min(CurrentPH.Height, NewHeight)
                 CurrentPH.BackgroundWidth = CurrentPH.Width
                 CurrentPH.BackgroundHeight = CurrentPH.Height
-            if(CurrentPH.Background != ""):
+            if (CurrentPH.Background != ""):
                 # if placeholder has a background image
                 # get image
                 BackgroundImage = Util.GetImage(CurrentPH.Background)
@@ -135,7 +139,7 @@ class ScreenPlaceholder:
                             BackgroundImage, 
                             (CurrentPH.X + (CurrentPH.BackgroundWidth * X), 
                             CurrentPH.Y + (CurrentPH.BackgroundHeight * Y)))
-            if(CurrentPH.Icon != ""):
+            if (CurrentPH.Icon != ""):
                 # if placeholder has an icon
                 # get image
                 IconImage = Util.GetImage(CurrentPH.Icon)
@@ -147,7 +151,7 @@ class ScreenPlaceholder:
                 GV.Screen.blit(
                     IconImage, 
                     (CurrentPH.IconX, CurrentPH.IconY))
-            if(CurrentPH.Legend != ""):
+            if (CurrentPH.Legend != ""):
                 # if placeholder has a legend
                 # get font
                 LegendFont = pygame.font.SysFont(

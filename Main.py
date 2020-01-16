@@ -1,5 +1,7 @@
-# Maze v1.3
-# PyGame
+"""
+    Maze v1.3
+    PyGame
+"""
 
 # Modules importation
 # -------------------

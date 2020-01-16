@@ -1,7 +1,13 @@
+"""
+    Class
+"""
+
+import sys
+import json
 import pygame
+import Utilities.GlobalVariables as GV
 import Utilities.Utilities as Util
-from Models.Maze import *
-from Models.MazeElement import *
+from Models.Maze import Maze
 
 class Character:
     """
@@ -34,8 +40,8 @@ class Character:
 
 
     @staticmethod
-    def LoadCharactersFromFile(Maze):
-        """ 
+    def LoadCharactersFromFile():
+        """
             Load maze characters from json file and store them into list of Maze Characters
 
             :param arg1: The maze
@@ -59,9 +65,9 @@ class Character:
                     CurrentCharacter = Character(TempCharacter)
                     Maze.Characters.append(CurrentCharacter)
                     # if current character is player, save it
-                    if(CurrentCharacter.Behaviors[0].lower() == "player"):
+                    if (CurrentCharacter.Behaviors[0].lower() == "player"):
                         Player = CurrentCharacter
-            
+
             # Returns Player
             return Player
 
@@ -69,11 +75,11 @@ class Character:
             # If there is an OSError exception
             print("\nLes personnages du labyrinthe demandé n'ont pas été trouvés !\n")
             # exit application
-            os._exit(1)
+            sys.exit(1)
 
 
     def GetPlayerData(self):
-        """ 
+        """
             Get player data
         """
 
@@ -82,7 +88,7 @@ class Character:
         print("\nBonjour humain, merci de t'identifier afin que je puisse interagir avec toi.")
 
         # Ask for name until it is filled
-        while(Name == ""):
+        while (Name == ""):
             Name = input("\nComment dois-je t'appeller : ")
 
         # Update name
@@ -90,7 +96,7 @@ class Character:
 
 
     def SayWelcome(self):
-        """ 
+        """
             Say Welcome to player
         """
 
@@ -99,11 +105,11 @@ class Character:
             .format(self.Name))
 
 
-    def MoveInMaze(self,
-        Maze,
+    def MoveInMaze(
+        self,
         CharacterNewX: int = 0,
         CharacterNewY: int = 0):
-        """ 
+        """
             Move character in maze (or place him if not already done)
 
             :param arg1: The maze
@@ -120,44 +126,44 @@ class Character:
 
         # Check if character is not already in the maze (coordinates set to 0)
         if (self.X == 0 and self.Y == 0):
-            # In that case put him at the entrance
+            # in that case put him at the entrance
             # find it by browsing maze list
             for Y, Line in enumerate(Maze.MapLayer):
-                # New line, set X coordinate to 0
+                # new line, set X coordinate to 0
                 X = 0
                 for X, CurrentElement in enumerate(Line):
-                    # If position contains entrance (E)
+                    # if position contains entrance (E)
                     if (CurrentElement.Name == "Entrée"):
                         # push character from entrance
                         if (X >= 0 and Maze.MapLayer[Y][X-1].Name == "Sol"):
-                            self.X = X - 1
+                            self.X -= 1
                             self.Y = Y
                         elif (X <= len(Maze.MapLayer[0]) and Maze.MapLayer[Y][X+1].Name == "Sol"):
-                            self.X = X + 1
+                            self.X += 1
                             self.Y = Y
                         elif (Y >= 0 and Maze.MapLayer[Y-1][X].Name == "Sol"):
                             self.X = X
-                            self.Y = Y - 1
+                            self.Y -= 1
                         elif (Y <= len(Maze.MapLayer) and Maze.MapLayer[Y+1][X].Name == "Sol"):
                             self.X = X
-                            self.Y = Y + 1
+                            self.Y += 1
                         # put him in the maze
                         Maze.CharacterLayer[self.Y][self.X] = self
-                        # Exit loops (and method)
+                        # exit loops (and method)
                         return
-                    # Increment X coordinate
+                    # increment X coordinate
                     X += 1
-                # Increment Y coordinate
+                # increment Y coordinate
                 Y += 1
 
         else:
             # Character is already in maze
-            
+
             # replace actual character position with nothing
             Maze.CharacterLayer[self.Y][self.X] = None
             # redraw maze at old character position
             Maze.DrawElementsAtPosition(self.X, self.Y)
-            
+
             # assign new coordinates to character
             self.X = CharacterNewX
             self.Y = CharacterNewY
@@ -168,8 +174,8 @@ class Character:
 
 
     @staticmethod
-    def GetAction(Character) -> str:
-        """ 
+    def GetAction() -> str:
+        """
             Wait player to make an action
 
             :param arg1: The character
@@ -179,40 +185,39 @@ class Character:
             :rtype: string
         """
 
+        Action: str = ""
+
         # PyGame event loop
-        for event in pygame.event.get():
+        for Event in pygame.event.get():
             # get player input
-            if event.type == pygame.QUIT:
+            if (Event.type == pygame.QUIT):
                 # if game exits (user click on red cross in upper right)
-                print("Tu choisis de quitter le labyrinthe, tu as perdu !\n")
-                return "QuitGame"
-                EndOfGame = True
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    print("Tu choisis de quitter le labyrinthe, tu as perdu !\n")
-                    return "QuitGame"
-                    EndOfGame = True
-                elif event.key == pygame.K_w or event.key == pygame.K_UP:
+                print("\nTu choisis de quitter le labyrinthe, tu as perdu !\n")
+                Action = "QuitGame"
+            elif (Event.type == pygame.KEYDOWN):
+                if (Event.key == pygame.K_ESCAPE):
+                    print("\nTu choisis de quitter le labyrinthe, tu as perdu !\n")
+                    Action = "QuitGame"
+                elif (Event.key == pygame.K_w or Event.key == pygame.K_UP):
                     print("Tu te déplaces vers le haut...")
-                    return "MoveUp"
-                elif event.key == pygame.K_x or event.key == pygame.K_DOWN:
+                    Action = "MoveUp"
+                elif (Event.key == pygame.K_s or Event.key == pygame.K_DOWN):
                     print("Tu te déplaces vers le bas...")
-                    return "MoveDown"
-                elif event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    Action = "MoveDown"
+                elif (Event.key == pygame.K_a or Event.key == pygame.K_LEFT):
                     print("Tu te déplaces vers la gauche...")
-                    return "MoveLeft"
-                elif event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    Action = "MoveLeft"
+                elif (Event.key == pygame.K_d or Event.key == pygame.K_RIGHT):
                     print("Tu te déplaces vers la droite...")
-                    return "MoveRight"
+                    Action = "MoveRight"
 
         # No action done
-        return ""
+        return Action
 
 
-    def ExecuteAction(self,     
-        Action: str,
-        Maze) -> bool:
-        """ 
+    def ExecuteAction(self,
+        Action: str) -> bool:
+        """
             Execute character action and returns new position
 
             :param arg1: The action
@@ -243,9 +248,9 @@ class Character:
 
 
         # Check if new coordinates are valid (into maze limits)
-        if (CharacterNewX < 0 or 
-            CharacterNewX > len(Maze.MapLayer[0]) or 
-            CharacterNewY < 0 or 
+        if (CharacterNewX < 0 or
+            CharacterNewX > len(Maze.MapLayer[0]) or
+            CharacterNewY < 0 or
             CharacterNewY > len(Maze.MapLayer)):
             # if character is out of maze limits
             print("Tu es en dehors des limites, tu ne peux pas aller par là !")
@@ -254,7 +259,7 @@ class Character:
         # Get current maze elements at coordinates
         CurrentMapElement = Maze.MapLayer[CharacterNewY][CharacterNewX]
         CurrentObject = Maze.ObjectLayer[CharacterNewY][CharacterNewX]
-        CurrentCharacter = Maze.CharacterLayer[CharacterNewY][CharacterNewX]
+        #CurrentCharacter = Maze.CharacterLayer[CharacterNewY][CharacterNewX]
 
         # Check current map/object/character behavior or name
         if (CurrentMapElement.Name.lower() == "sortie"):
@@ -279,8 +284,7 @@ class Character:
                     Maze.DrawElementsAtPosition(CharacterNewX, CharacterNewY)
                     # say door opens
                     print(
-                        "\nOuiiii, tu as trouvé la sortie et tu as tous les objets nécessaires, la porte s'ouvre !\n"
-                        .format(self.Name))
+                        "\nOuiiii, tu as trouvé la sortie et tu as tous les objets nécessaires, la porte s'ouvre !\n")
 
                 else:
                     # some objects are missing
@@ -290,20 +294,20 @@ class Character:
                         .format(MissingObjects))
             else:
                 # door is opened
-                    # move character in maze
-                    self.MoveInMaze(Maze, CharacterNewX, CharacterNewY)
-                    # say victory
-                    print(
-                        "\nBravo {0}, tu es sorti victorieux du labyrinthe :-)\n"
-                        .format(self.Name))
-                    # and return game end
-                    return True
-        
+                # move character in maze
+                self.MoveInMaze(CharacterNewX, CharacterNewY)
+                # say victory
+                print(
+                    "\nBravo {0}, tu es sorti victorieux du labyrinthe :-)\n"
+                    .format(self.Name))
+                # and return game end
+                return True
+
         elif ("block" in CurrentMapElement.Behaviors):
             # if there is an obstacle, say it
             print("Oups un mur, tu ne peux pas bouger !")
-        
-        elif (CurrentObject != None and "pick" in CurrentObject.Behaviors):
+
+        elif (CurrentObject is not None and "pick" in CurrentObject.Behaviors):
             # if there is an object
             # open chest and get object image in place
             CurrentObject.CurrentImageIndex = 1
@@ -313,7 +317,7 @@ class Character:
                 print(
                     "Chouette, tu as trouvé un(e) {0}\n"
                     .format(CurrentObject.Name))
-                # remove it from maze 
+                # remove it from maze
                 Maze.ObjectLayer[CharacterNewY][CharacterNewX] = None
                 # put it in backpack
                 self.Backpack.append(CurrentObject)
@@ -326,19 +330,19 @@ class Character:
                     "Tu as trouvé un(e) {0} mais ton sac est déjà plein...\n"
                     .format(CurrentObject.Name))
             # move character in maze
-            self.MoveInMaze(Maze, CharacterNewX, CharacterNewY)
-            
+            self.MoveInMaze(CharacterNewX, CharacterNewY)
+
         else:
             # if nothing special
             # move character in maze
-            self.MoveInMaze(Maze, CharacterNewX, CharacterNewY)
+            self.MoveInMaze(CharacterNewX, CharacterNewY)
 
-        # Game is not yet ended    
+        # Game is not yet ended
         return False
 
 
     def DrawBackpack(self):
-        """ 
+        """
             Draw backpack items
         """
 
@@ -354,17 +358,19 @@ class Character:
                 VisualElementIndex += 4
             # scale image
             ElementImage = pygame.transform.scale(
-                ElementImage, 
-                (int(GV.BackpackPlaceholder.BackgroundWidth * GV.ObjectSpriteScaleInBackpack), 
-                int(GV.BackpackPlaceholder.BackgroundHeight * GV.ObjectSpriteScaleInBackpack)))
+                ElementImage,
+                (int(GV.BackpackPlaceholder.BackgroundWidth * GV.ObjectSpriteScaleInBackpack),
+                 int(GV.BackpackPlaceholder.BackgroundHeight * GV.ObjectSpriteScaleInBackpack)))
             # get image position
             Y = VisualElementIndex // GV.BackpackPlaceholder.BackgroundRepeatX
             X = VisualElementIndex % GV.BackpackPlaceholder.BackgroundRepeatX
             # draw image
             GV.Screen.blit(
-                ElementImage, 
-                (GV.BackpackPlaceholder.X + (GV.BackpackPlaceholder.BackgroundWidth * X) + int(GV.BackpackPlaceholder.BackgroundWidth * (1 - GV.ObjectSpriteScaleInBackpack) // 2), 
-                GV.BackpackPlaceholder.Y + (GV.BackpackPlaceholder.BackgroundHeight * Y) + int(GV.BackpackPlaceholder.BackgroundHeight * (1 - GV.ObjectSpriteScaleInBackpack) // 2)))
-        
+                ElementImage,
+                (GV.BackpackPlaceholder.X + (GV.BackpackPlaceholder.BackgroundWidth * X)
+                 + int(GV.BackpackPlaceholder.BackgroundWidth * (1 - GV.ObjectSpriteScaleInBackpack) // 2),
+                 GV.BackpackPlaceholder.Y + (GV.BackpackPlaceholder.BackgroundHeight * Y)
+                 + int(GV.BackpackPlaceholder.BackgroundHeight * (1 - GV.ObjectSpriteScaleInBackpack) // 2)))
+
         # update screen to show images
         pygame.display.update()

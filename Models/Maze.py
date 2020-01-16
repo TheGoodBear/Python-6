@@ -1,4 +1,8 @@
-import os
+"""
+    Class
+"""
+
+import sys
 import random
 import pygame
 import Utilities.GlobalVariables as GV
@@ -93,11 +97,11 @@ class Maze:
                         if (Char != "\n"):
                             # Search in maze elements for matching symbol
                             CurrentElement = MazeElement.GetElement(cls, Symbol=Char)
-                            if (CurrentElement != None):
+                            if (CurrentElement is not None):
                                 # If an element was found
-                                    # append element
-                                    LineData.append(CurrentElement)
-                                    OtherLayerData.append(None)
+                                # append element
+                                LineData.append(CurrentElement)
+                                OtherLayerData.append(None)
                     # Store LineData list in MapLayer list
                     cls.MapLayer.append(LineData)
                     # Store blank data list in Object and Character Layers lists
@@ -108,7 +112,7 @@ class Maze:
             # If there is an OSError exception
             print("\nLe labyrinthe demandé n'a pas été trouvé !\n")
             # exit application
-            os._exit(1)
+            sys.exit(1)
 
 
     @classmethod
@@ -126,7 +130,7 @@ class Maze:
                 ObjectY: int = random.randint(0, len(cls.MapLayer[0]) - 1)
                 while ("block" in cls.MapLayer[ObjectY][ObjectX].Behaviors
                     or "close" in cls.MapLayer[ObjectY][ObjectX].Behaviors
-                    or cls.ObjectLayer[ObjectY][ObjectX] != None):
+                    or cls.ObjectLayer[ObjectY][ObjectX] is not None):
                     # do it again until random position is ground
                     ObjectX = random.randint(0, len(cls.MapLayer) - 1)
                     ObjectY = random.randint(0, len(cls.MapLayer[0]) - 1)
@@ -155,7 +159,7 @@ class Maze:
                     GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight))
                 
                 # draw object sprite
-                if(cls.ObjectLayer[Y][X] != None):
+                if(cls.ObjectLayer[Y][X] is not None):
                     ObjectImage = cls.ObjectLayer[Y][X].Images[cls.ObjectLayer[Y][X].CurrentImageIndex]
                     ObjectImage = pygame.transform.scale(
                         ObjectImage, 
@@ -166,15 +170,17 @@ class Maze:
                         GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight + int((cls.MapSpriteHeight - cls.ObjectSpriteHeight) / 2))) 
                 
                 # draw character sprite
-                if(cls.CharacterLayer[Y][X] != None):
+                if(cls.CharacterLayer[Y][X] is not None):
                     CharacterImage = cls.CharacterLayer[Y][X].Images[cls.CharacterLayer[Y][X].CurrentImageIndex]
                     CharacterImage = pygame.transform.scale(
                         CharacterImage, 
                         (cls.CharacterSpriteWidth, cls.CharacterSpriteHeight))
                     GV.Screen.blit(
                         CharacterImage, 
-                        (GV.MapPlaceholder.X + X * cls.MapSpriteWidth + int((cls.MapSpriteWidth - cls.CharacterSpriteWidth) / 2), 
-                        GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight + int((cls.MapSpriteHeight - cls.CharacterSpriteHeight) / 2))) 
+                        (GV.MapPlaceholder.X + X * cls.MapSpriteWidth 
+                        + int((cls.MapSpriteWidth - cls.CharacterSpriteWidth) / 2), 
+                        GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight 
+                        + int((cls.MapSpriteHeight - cls.CharacterSpriteHeight) / 2))) 
 
         # update screen
         pygame.display.update()
@@ -219,7 +225,7 @@ class Maze:
             GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight))
         
         # draw object sprite
-        if(cls.ObjectLayer[Y][X] != None):
+        if(cls.ObjectLayer[Y][X] is not None):
             ObjectImage = cls.ObjectLayer[Y][X].Images[cls.ObjectLayer[Y][X].CurrentImageIndex]
             ObjectImage = pygame.transform.scale(
                 ObjectImage, 
@@ -230,7 +236,7 @@ class Maze:
                 GV.MapPlaceholder.Y + Y * cls.MapSpriteHeight + int((cls.MapSpriteHeight - cls.ObjectSpriteHeight) / 2))) 
         
         # draw character sprite
-        if(cls.CharacterLayer[Y][X] != None):
+        if(cls.CharacterLayer[Y][X] is not None):
             CharacterImage = cls.CharacterLayer[Y][X].Images[cls.CharacterLayer[Y][X].CurrentImageIndex]
             CharacterImage = pygame.transform.scale(
                 CharacterImage, 
