@@ -14,5 +14,6 @@
     "--good-names=X,Y,i,j,k,ex,Run,_,cls,self",
     "--max-line-length=130",
     "--disable=trailing-whitespace,bad-continuation,superfluous-parens,too-few-public-methods,too-many-instance-attributes"
-    ]
+    ],
+    "python.pythonPath": ".venv\\Scripts\\python.exe"
 }
