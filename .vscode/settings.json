@@ -13,7 +13,7 @@
     "--variable-naming-style=PascalCase",
     "--good-names=X,Y,i,j,k,ex,Run,_,cls,self",
     "--max-line-length=130",
-    "--disable=trailing-whitespace,bad-continuation,superfluous-parens,too-few-public-methods,too-many-instance-attributes"
+    "--disable=trailing-whitespace,bad-continuation,superfluous-parens,too-few-public-methods,too-many-instance-attributes,too-many-function-args"
     ],
     "python.pythonPath": ".venv\\Scripts\\python.exe"
 }
