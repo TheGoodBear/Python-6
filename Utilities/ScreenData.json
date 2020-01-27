@@ -18,11 +18,12 @@
         "LegendFontName": "",
         "LegendFontSize": 0,
         "LegendFontBold": "",
-        "LegendFontColor": "0,0,0",
+        "LegendColor": "0,0,0",
         "LegendX": 0,
         "LegendY": 0,
         "TextFontName": "",
         "TextFontSize": 0,
+        "TextColor": "0,0,0",
         "TextX": 0,
         "TextY": 0
     },
@@ -45,11 +46,12 @@
         "LegendFontName": "",
         "LegendFontSize": 0,
         "LegendFontBold": "",
-        "LegendFontColor": "0,0,0",
+        "LegendColor": "0,0,0",
         "LegendX": 0,
         "LegendY": 0,
         "TextFontName": "",
         "TextFontSize": 0,
+        "TextColor": "0,0,0",
         "TextX": 0,
         "TextY": 0
     },
@@ -72,12 +74,13 @@
         "LegendFontName": "comicsansms",
         "LegendFontSize": 20,
         "LegendFontBold": "True",
-        "LegendFontColor": "0,0,0",
+        "LegendColor": "0,0,0",
         "LegendX": 40,
         "LegendY": 0,
         "TextFontName": "comicsansms",
         "TextFontSize": 12,
-        "TextX": 10,
-        "TextY": 10
+        "TextColor": "0,0,0",
+        "TextX": 8,
+        "TextY": 13
     }
 ]

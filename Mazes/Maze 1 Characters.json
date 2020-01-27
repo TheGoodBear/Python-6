@@ -1,6 +1,6 @@
 [
     {
-        "Name": "",
+        "Name": "Joueur",
         "Images": ["PlayerMale", "PlayerFemale"],
         "RandomImage": false,
         "Behaviors": ["Player"],

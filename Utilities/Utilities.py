@@ -69,3 +69,51 @@ def GetImage(ImageName: str):
 
     # return image
     return MyImage
+
+
+def WriteText(
+    Message: str = "",
+    X: int = 0,
+    Y: int = 0,
+    Width: int = 100,
+    Height: int = 50,
+    FontName: str = "Arial",
+    FontSize: int = 32,
+    TextColor = (255, 255, 255),
+    UpdateScreen = True):
+    """
+        Write text with PyGame
+
+        :param arg1: The text
+        :type arg1: string
+        :param arg2: Text X position in pixels
+        :type arg2: int
+        :param arg3: Text Y position in pixels
+        :type arg3: int
+        :param arg4: Text rectangle width in pixels
+        :type arg4: int
+        :param arg5: Text rectangle height in pixels
+        :type arg5: int
+        :param arg6: Font name
+        :type arg6: string
+        :param arg7: Font size in pixels
+        :type arg7: int
+        :param arg8: Color of text
+        :type arg8: tuple (int, int, int) - RGB
+        :param arg9: If screen needs to be updated immediately to show text
+        :type arg9: bool
+    """
+
+    # Create font object
+    FontObject = pygame.font.SysFont(FontName, FontSize)
+    
+    # Render font object
+    for LineNumber, LineText in enumerate(Message.split("\n")):
+        Text = FontObject.render(LineText, True, TextColor)
+        GV.Screen.blit(
+            Text, 
+            (X, Y + (LineNumber * FontSize)))
+
+    if UpdateScreen:        
+        # update screen to show text
+        pygame.display.update()

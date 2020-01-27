@@ -2,6 +2,7 @@
     Class
 """
 
+import os
 import sys
 import json
 import pygame
@@ -57,7 +58,7 @@ class ScreenPlaceholder:
         self.LegendFontName: str = PlaceholderData["LegendFontName"]
         self.LegendFontSize: int = PlaceholderData["LegendFontSize"]
         self.LegendFontBold: str = PlaceholderData["LegendFontBold"]
-        self.LegendFontColor: tuple = tuple(int(Number) for Number in str(PlaceholderData["LegendFontColor"]).split(","))
+        self.LegendColor: tuple = tuple(int(Number) for Number in str(PlaceholderData["LegendColor"]).split(","))
         self.LegendXPercent: int = PlaceholderData["LegendX"]
         self.LegendX: int = self.X + (self.Width * self.LegendXPercent // 100)
         self.LegendYPercent: int = PlaceholderData["LegendY"]
@@ -65,6 +66,7 @@ class ScreenPlaceholder:
 
         self.TextFontName: str = PlaceholderData["TextFontName"]
         self.TextFontSize: int = PlaceholderData["TextFontSize"]
+        self.TextColor: tuple = tuple(int(Number) for Number in str(PlaceholderData["TextColor"]).split(","))
         self.TextXPercent: int = PlaceholderData["TextX"]
         self.TextX: int = self.Width * self.TextXPercent // 100
         self.TextYPercent: int = PlaceholderData["TextY"]
@@ -154,13 +156,16 @@ class ScreenPlaceholder:
             if (CurrentPH.Legend != ""):
                 # if placeholder has a legend
                 # get font
-                LegendFont = pygame.font.SysFont(
-                    CurrentPH.LegendFontName, CurrentPH.LegendFontSize)                
+                # LegendFont = pygame.font.SysFont(
+                #     CurrentPH.LegendFontName, CurrentPH.LegendFontSize)                
+                if not os.path.isfile(CurrentPH.LegendFontName):
+                    CurrentPH.LegendFontName = pygame.font.match_font(CurrentPH.LegendFontName)
+                LegendFont = pygame.font.Font(CurrentPH.LegendFontName, CurrentPH.LegendFontSize)
                 # render font
                 if(CurrentPH.LegendFontBold != ""):
                     LegendFont.set_bold(True)
                 LegendText = LegendFont.render(
-                    CurrentPH.Legend, True, CurrentPH.LegendFontColor)
+                    CurrentPH.Legend, True, CurrentPH.LegendColor)
                 # draw it
                 GV.Screen.blit(
                     LegendText, 
