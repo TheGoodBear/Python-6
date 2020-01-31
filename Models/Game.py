@@ -2,6 +2,7 @@
     Class
 """
 
+import pygame
 import Utilities.GlobalVariables as GV
 import Utilities.Utilities as Util
 from Models.Character import Character
@@ -78,24 +79,18 @@ class Game:
 
         # Show initial message
         Message = \
-"""Très bien {0}, ton objectif est de sortir du labyrinthe.
-Pour cela il te faudra trouver la sortie et avoir collecté les objets nécessaires à l'ouverture de la porte. 
-Tu es représenté par {1} et la porte de sortie par {2}. 
-À chaque tour tu peux effectuer l'une des actions suivantes :
-Te déplacer grâce aux flèches ou appuyer sur ESC pour quitter le jeu (et perdre...)
-Bonne chance."""
-        Message = Message.format(
-            cls.Player.Name,
-            cls.Player.ImageNames[0],
-            MazeElement.GetElement(Maze, "Sortie").ImageNames[0])
+"""\nBonjour {0},
+\nton objectif est de sortir du labyrinthe.
+\nPour cela il te faudra trouver la sortie
+et avoir collecté les objets nécessaires
+à l'ouverture de la porte. 
+\nDéplace toi grâce aux flèches du clavier
+ou appuie sur ESC pour quitter le jeu,
+et perdre...
+\nBonne chance."""
+        Message = Message.format(cls.Player.Name)
         print(Message)
-        Util.WriteText(
-            Message,
-            GV.DialogPlaceholder.X + GV.DialogPlaceholder.TextX, 
-            GV.DialogPlaceholder.Y + GV.DialogPlaceholder.TextY,
-            FontName = GV.DialogPlaceholder.TextFontName,
-            FontSize = GV.DialogPlaceholder.TextFontSize,
-            TextColor = GV.DialogPlaceholder.TextColor)
+        Util.Write(Message)
 
         # Game loop
 
@@ -113,3 +108,24 @@ Bonne chance."""
             if(PlayerAction != ""):
                 # Do action
                 EndOfGame = cls.Player.ExecuteAction(PlayerAction)
+
+        # game ended, go to final loop
+        cls.FinalLoop()
+
+
+    @staticmethod
+    def FinalLoop():
+        """
+            Wait for application end
+        """
+
+        EndOfApplication: bool = False
+        while not EndOfApplication:
+            for Event in pygame.event.get():
+                # get player input
+                if (Event.type == pygame.QUIT):
+                    # if game exits (user click on red cross in upper right)
+                    EndOfApplication = True
+                elif (Event.type == pygame.KEYDOWN):
+                    if (Event.key == pygame.K_ESCAPE):
+                        EndOfApplication = True

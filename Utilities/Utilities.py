@@ -71,7 +71,28 @@ def GetImage(ImageName: str):
     return MyImage
 
 
-def WriteText(
+def Write(Message: str = "", 
+    StartWithBlankLine: bool = True):
+    """
+        Write text on screen
+
+        :param arg1: The text
+        :type arg1: string
+    """
+    if StartWithBlankLine:
+        Message = "\n" + Message
+
+    PyGameWrite(
+        Message,
+        GV.DialogPlaceholder.X + GV.DialogPlaceholder.TextX, 
+        GV.DialogPlaceholder.Y + GV.DialogPlaceholder.TextY,
+        FontName = GV.DialogPlaceholder.TextFontName,
+        FontSize = GV.DialogPlaceholder.TextFontSize,
+        TextColor = GV.DialogPlaceholder.TextColor,
+        ClearTextAreaSurface = GV.DialogPlaceholder.TextBackground)
+
+
+def PyGameWrite(
     Message: str = "",
     X: int = 0,
     Y: int = 0,
@@ -80,6 +101,7 @@ def WriteText(
     FontName: str = "Arial",
     FontSize: int = 32,
     TextColor = (255, 255, 255),
+    ClearTextAreaSurface = None,
     UpdateScreen = True):
     """
         Write text with PyGame
@@ -104,6 +126,12 @@ def WriteText(
         :type arg9: bool
     """
 
+    # Clear text area before writing
+    if ClearTextAreaSurface is not None:
+        GV.Screen.blit(
+            ClearTextAreaSurface, 
+            (X, Y))
+
     # Create font object
     FontObject = pygame.font.SysFont(FontName, FontSize)
     
@@ -117,3 +145,14 @@ def WriteText(
     if UpdateScreen:        
         # update screen to show text
         pygame.display.update()
+
+
+    def PlaySound(SoundName: str):
+    """
+        Play a sound
+
+        :param arg1: The name of the sound
+        :type arg1: string
+    """
+    # TODO
+    pass

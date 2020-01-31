@@ -78,31 +78,31 @@ class Character:
             sys.exit(1)
 
 
-    def GetPlayerData(self):
-        """
-            Get player data
-        """
+    # def GetPlayerData(self):
+    #     """
+    #         Get player data
+    #     """
 
-        Name: str = ""
+    #     Name: str = ""
 
-        print("\nBonjour humain, merci de t'identifier afin que je puisse interagir avec toi.")
+    #     print("\nBonjour humain, merci de t'identifier afin que je puisse interagir avec toi.")
 
-        # Ask for name until it is filled
-        while (Name == ""):
-            Name = input("\nComment dois-je t'appeller : ")
+    #     # Ask for name until it is filled
+    #     while (Name == ""):
+    #         Name = input("\nComment dois-je t'appeller : ")
 
-        # Update name
-        self.Name = Name
+    #     # Update name
+    #     self.Name = Name
 
 
-    def SayWelcome(self):
-        """
-            Say Welcome to player
-        """
+    # def SayWelcome(self):
+    #     """
+    #         Say Welcome to player
+    #     """
 
-        print(
-            "\nEnchanté {0}, j'espère que tu vas bien t'amuser." 
-            .format(self.Name))
+    #     print(
+    #         "\nEnchanté {0}, j'espère que tu vas bien t'amuser." 
+    #         .format(self.Name))
 
 
     def MoveInMaze(
@@ -192,23 +192,17 @@ class Character:
             # get player input
             if (Event.type == pygame.QUIT):
                 # if game exits (user click on red cross in upper right)
-                print("\nTu choisis de quitter le labyrinthe, tu as perdu !\n")
                 Action = "QuitGame"
             elif (Event.type == pygame.KEYDOWN):
                 if (Event.key == pygame.K_ESCAPE):
-                    print("\nTu choisis de quitter le labyrinthe, tu as perdu !\n")
                     Action = "QuitGame"
                 elif (Event.key == pygame.K_w or Event.key == pygame.K_UP):
-                    print("Tu te déplaces vers le haut...")
                     Action = "MoveUp"
                 elif (Event.key == pygame.K_s or Event.key == pygame.K_DOWN):
-                    print("Tu te déplaces vers le bas...")
                     Action = "MoveDown"
                 elif (Event.key == pygame.K_a or Event.key == pygame.K_LEFT):
-                    print("Tu te déplaces vers la gauche...")
                     Action = "MoveLeft"
                 elif (Event.key == pygame.K_d or Event.key == pygame.K_RIGHT):
-                    print("Tu te déplaces vers la droite...")
                     Action = "MoveRight"
 
         # No action done
@@ -229,21 +223,29 @@ class Character:
             :rtype: boolean
         """
 
+        # Message to be written
+        Message: str = ""
+
         # Local variables for character new coordinates
         CharacterNewX: int = self.X
         CharacterNewY: int = self.Y
 
         # Calculate character new coordinates
         if (Action == "MoveUp"):
+            Message = "Tu te déplaces vers le haut..."
             CharacterNewY -= 1
         elif (Action == "MoveDown"):
+            Message = "Tu te déplaces vers le bas..."
             CharacterNewY += 1
         elif (Action == "MoveLeft"):
+            Message = "Tu te déplaces vers la gauche..."
             CharacterNewX -= 1
         elif (Action == "MoveRight"):
+            Message = "Tu te déplaces vers la droite..."
             CharacterNewX += 1
         elif (Action == "QuitGame"):
             # if action is QuitGame then return game end
+            Util.Write("Tu choisis de quitter le labyrinthe,\ntu as perdu !\n\nAppuie sur Echap pour quitter l'application.")
             return True
 
 
@@ -253,7 +255,7 @@ class Character:
             CharacterNewY < 0 or
             CharacterNewY > len(Maze.MapLayer)):
             # if character is out of maze limits
-            print("Tu es en dehors des limites, tu ne peux pas aller par là !")
+            Message += "\n\nTu es en dehors des limites, tu ne peux pas aller par là !"
             return False
 
         # Get current maze elements at coordinates
@@ -283,29 +285,25 @@ class Character:
                     # redraw maze at new character position but without moving him
                     Maze.DrawElementsAtPosition(CharacterNewX, CharacterNewY)
                     # say door opens
-                    print(
-                        "\nOuiiii, tu as trouvé la sortie et tu as tous les objets nécessaires, la porte s'ouvre !\n")
+                    Message += "\n\nOuiiii, tu as trouvé la sortie\net tu as tous les objets nécessaires.\n\nLa porte s'ouvre !"
 
                 else:
                     # some objects are missing
                     # say how many
-                    print(
-                        "\nHa, tu as bien trouvé la sortie mais il te manque encore {0} objet(s) pour ouvrir la porte..."
-                        .format(MissingObjects))
+                    Message += "\n\nHa, tu as bien trouvé la sortie\nmais il te manque encore\n{0} objet(s) pour ouvrir la porte...".format(MissingObjects)
             else:
                 # door is opened
                 # move character in maze
                 self.MoveInMaze(CharacterNewX, CharacterNewY)
                 # say victory
-                print(
-                    "\nBravo {0}, tu es sorti victorieux du labyrinthe :-)\n"
-                    .format(self.Name))
-                # and return game end
+                Message += "\n\nBravo {0},\n\ntu es sorti victorieux du labyrinthe :-)\n\nAppuie sur Echap pour quitter l'application.".format(self.Name)
+                Util.Write(Message)
+               # and return game end
                 return True
 
         elif ("block" in CurrentMapElement.Behaviors):
             # if there is an obstacle, say it
-            print("Oups un mur, tu ne peux pas bouger !")
+            Message += "\n\nOups un mur,\ntu ne peux pas bouger !"
 
         elif (CurrentObject is not None and "pick" in CurrentObject.Behaviors):
             # if there is an object
@@ -314,9 +312,7 @@ class Character:
             if (len(self.Backpack) < self.BackpackCapacity):
                 # if backpack is not full
                 # say it
-                print(
-                    "Chouette, tu as trouvé un(e) {0}\n"
-                    .format(CurrentObject.Name))
+                Message += "\n\nChouette !\n\nTu as trouvé un(e) {0}.".format(CurrentObject.Name)
                 # remove it from maze
                 Maze.ObjectLayer[CharacterNewY][CharacterNewX] = None
                 # put it in backpack
@@ -326,9 +322,7 @@ class Character:
             else:
                 # if backpack is full
                 # say it
-                print(
-                    "Tu as trouvé un(e) {0} mais ton sac est déjà plein...\n"
-                    .format(CurrentObject.Name))
+                Message += "\n\nTu as trouvé un(e) {0}\nmais ton sac est déjà plein...".format(CurrentObject.Name)
             # move character in maze
             self.MoveInMaze(CharacterNewX, CharacterNewY)
 
@@ -336,6 +330,9 @@ class Character:
             # if nothing special
             # move character in maze
             self.MoveInMaze(CharacterNewX, CharacterNewY)
+
+        # Write message
+        Util.Write(Message)
 
         # Game is not yet ended
         return False

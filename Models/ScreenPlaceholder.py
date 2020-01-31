@@ -69,8 +69,11 @@ class ScreenPlaceholder:
         self.TextColor: tuple = tuple(int(Number) for Number in str(PlaceholderData["TextColor"]).split(","))
         self.TextXPercent: int = PlaceholderData["TextX"]
         self.TextX: int = self.Width * self.TextXPercent // 100
+        self.TextWidth: int = self.Width * (100 - self.TextXPercent * 2) // 100
         self.TextYPercent: int = PlaceholderData["TextY"]
         self.TextY: int = self.Height * self.TextYPercent // 100
+        self.TextHeight: int = self.Height * (100 - self.TextYPercent * 2) // 100
+        self.TextBackground = pygame.Surface((self.TextWidth, self.TextHeight)) if self.TextFontName != "" else None
 
         self.SpriteWidth: int = 0
         self.SpriteHeight: int = 0
@@ -141,6 +144,18 @@ class ScreenPlaceholder:
                             BackgroundImage, 
                             (CurrentPH.X + (CurrentPH.BackgroundWidth * X), 
                             CurrentPH.Y + (CurrentPH.BackgroundHeight * Y)))
+                # save background of text area if appropriate
+                if (CurrentPH.TextBackground is not None):
+                    # get image
+                    TextBackground = pygame.transform.scale(
+                        Util.GetImage(CurrentPH.Background), 
+                        (CurrentPH.BackgroundWidth, CurrentPH.BackgroundHeight))
+                    # save image portion to text background
+                    CurrentPH.TextBackground.blit(
+                        TextBackground,
+                            (0, 0),
+                            (CurrentPH.TextX, CurrentPH.TextY, CurrentPH.TextWidth, CurrentPH.TextHeight)) 
+
             if (CurrentPH.Icon != ""):
                 # if placeholder has an icon
                 # get image
