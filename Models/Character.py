@@ -158,6 +158,8 @@ class Character:
 
         else:
             # Character is already in maze
+            # play sound
+            Util.ManageSound("Move")
 
             # replace actual character position with nothing
             Maze.CharacterLayer[self.Y][self.X] = None
@@ -256,6 +258,8 @@ class Character:
             CharacterNewY > len(Maze.MapLayer)):
             # if character is out of maze limits
             Message += "\n\nTu es en dehors des limites, tu ne peux pas aller par là !"
+            # play sound
+            Util.ManageSound("Collision")
             return False
 
         # Get current maze elements at coordinates
@@ -286,11 +290,15 @@ class Character:
                     Maze.DrawElementsAtPosition(CharacterNewX, CharacterNewY)
                     # say door opens
                     Message += "\n\nOuiiii, tu as trouvé la sortie\net tu as tous les objets nécessaires.\n\nLa porte s'ouvre !"
+                    # play sound
+                    Util.ManageSound("DoorOpen")
 
                 else:
                     # some objects are missing
                     # say how many
                     Message += "\n\nHa, tu as bien trouvé la sortie\nmais il te manque encore\n{0} objet(s) pour ouvrir la porte...".format(MissingObjects)
+                    # play sound
+                    Util.ManageSound("LevelIncomplete")
             else:
                 # door is opened
                 # move character in maze
@@ -298,15 +306,21 @@ class Character:
                 # say victory
                 Message += "\n\nBravo {0},\n\ntu es sorti victorieux du labyrinthe :-)\n\nAppuie sur Echap pour quitter l'application.".format(self.Name)
                 Util.Write(Message)
+                # play sound
+                Util.ManageSound("LevelComplete")
                # and return game end
                 return True
 
         elif ("block" in CurrentMapElement.Behaviors):
             # if there is an obstacle, say it
             Message += "\n\nOups un mur,\ntu ne peux pas bouger !"
+            # play sound
+            Util.ManageSound("Collision")
 
         elif (CurrentObject is not None and "pick" in CurrentObject.Behaviors):
             # if there is an object
+            # move character in maze
+            self.MoveInMaze(CharacterNewX, CharacterNewY)
             # open chest and get object image in place
             CurrentObject.CurrentImageIndex = 1
             if (len(self.Backpack) < self.BackpackCapacity):
@@ -317,14 +331,19 @@ class Character:
                 Maze.ObjectLayer[CharacterNewY][CharacterNewX] = None
                 # put it in backpack
                 self.Backpack.append(CurrentObject)
+                # play sound
+                if ("combine" in CurrentObject.Behaviors):
+                    Util.ManageSound("PickupTreasure")
+                else:
+                    Util.ManageSound("PickupCasual")
                 # redraw backpack
                 self.DrawBackpack()
             else:
                 # if backpack is full
                 # say it
                 Message += "\n\nTu as trouvé un(e) {0}\nmais ton sac est déjà plein...".format(CurrentObject.Name)
-            # move character in maze
-            self.MoveInMaze(CharacterNewX, CharacterNewY)
+                # play sound
+                Util.ManageSound("BackpackFull")
 
         else:
             # if nothing special

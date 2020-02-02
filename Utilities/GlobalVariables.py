@@ -31,10 +31,14 @@ Clock = None
 FPS: int = 60
 
 # Resources
-# image library for entire application
+# media library for entire application
 ImageLibrary: dict = {}
+SoundLibrary: dict = {}
 # generic image parameters
 ImageExtension: str = ".png"
 GraphicResourcePath: str = "Resources/Graphic/"
 # generic audio parameters
+SoundExtension: str = ".wav"
 AudioResourcePath: str = "Resources/Audio/"
+# generic font parameters
+FontResourcePath: str = "Resources/Font/"

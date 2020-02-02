@@ -1,13 +1,14 @@
 # Usefull methods for application
 
 import os
+import time
 import pygame
 import Utilities.GlobalVariables as GV
 
 
 def LoadImages(ImageNames: str) -> list:
     """
-        Load images from resources and returns them
+        Load images from resources and return them
 
         :param arg1: The name of the image file
         :type arg1: string
@@ -71,8 +72,39 @@ def GetImage(ImageName: str):
     return MyImage
 
 
+def GetSound(SoundName: str):
+    """
+        Get a sound from the application's library
+            if the sound exists in the library simply return it
+            else load it into library from specified path (generic to work in all OS)
+
+        :param arg1: Sound path
+        :type arg1: string
+
+        :return: The sound
+        :rtype: pygame.sound
+    """
+
+    # Get from library
+    MySound = GV.SoundLibrary.get(SoundName)
+
+    if MySound == None:
+        # if sound does not exist in library
+        # create generic path for all OS
+        SoundPath = GV.AudioResourcePath + SoundName + GV.SoundExtension
+        SoundPath = SoundPath.replace('/', os.sep).replace('\\', os.sep)
+        # load sound
+        MySound = pygame.mixer.Sound(SoundPath)
+        # store it in library
+        GV.SoundLibrary[SoundName] = MySound
+
+    # return sound
+    return MySound
+
+
 def Write(Message: str = "", 
-    StartWithBlankLine: bool = True):
+    StartWithBlankLine: bool = True,
+    FontSize: int = 0):
     """
         Write text on screen
 
@@ -87,9 +119,41 @@ def Write(Message: str = "",
         GV.DialogPlaceholder.X + GV.DialogPlaceholder.TextX, 
         GV.DialogPlaceholder.Y + GV.DialogPlaceholder.TextY,
         FontName = GV.DialogPlaceholder.TextFontName,
-        FontSize = GV.DialogPlaceholder.TextFontSize,
+        FontSize = FontSize if FontSize > 0 else GV.DialogPlaceholder.TextFontSize,
         TextColor = GV.DialogPlaceholder.TextColor,
         ClearTextAreaSurface = GV.DialogPlaceholder.TextBackground)
+
+
+def ManageSound(SoundName: str, 
+    Action: str = "Play",
+    Repeat: int = 1,
+    RepeatDelay : int = 300):
+    """
+        Play a sound
+
+        :param arg1: The name of the sound
+        :type arg1: string
+        :param arg2: action to make with sound (play, pause, stop)
+        :type arg2: string
+        :param arg3: number of times sound should be played
+        :type arg3: int
+        :param arg4: delay in ms between 2 repetitions
+        :type arg4: int
+    """
+
+    # get sound
+    MySound = GetSound(SoundName)
+
+    # do action
+    if (Action.lower() == "play"):
+        for Number in range(0, Repeat):
+            MySound.play()
+            if (Repeat > 1):
+                time.sleep(RepeatDelay // 1000)
+    elif (Action.lower() == "pause"):
+        MySound.pause()
+    if (Action.lower() == "stop"):
+        MySound.stop()
 
 
 def PyGameWrite(
@@ -145,14 +209,3 @@ def PyGameWrite(
     if UpdateScreen:        
         # update screen to show text
         pygame.display.update()
-
-
-    def PlaySound(SoundName: str):
-    """
-        Play a sound
-
-        :param arg1: The name of the sound
-        :type arg1: string
-    """
-    # TODO
-    pass

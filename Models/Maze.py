@@ -24,9 +24,9 @@ class Maze:
     # MapLayer for fixed elements (walls, stairs, doors, ...)
     MapLayer: list = []
     # ObjectLayer for items (pickable objects)
-    ObjectLayer: list = []
+    ObjectLayer: list = []  
     # CharacterLayer for characters (player, ennemies, ...)
-    CharacterLayer: list = []    # Elements composing the maze
+    CharacterLayer: list = []   
     Elements: list = []
     # Characters acting in the maze
     Characters: list = []
@@ -59,8 +59,11 @@ class Maze:
 
         # Load maze elements from json file
         MazeElement.LoadElementsFromFile(Maze)
-        # Load maze from text file
+        # Load maze from text file and initialize map layer
         Maze.LoadMapFromFile()
+        # Initialize other layers with generators
+        cls.ObjectLayer = [[None] * len(cls.MapLayer[0]) for _ in range(len(cls.MapLayer))]
+        cls.CharacterLayer = [[None] * len(cls.MapLayer[0]) for _ in range(len(cls.MapLayer))]
 
         # Define sprite sizes
         cls.MapSpriteWidth = int(GV.MapPlaceholder.Width / len(cls.MapLayer[0]) * GV.MapSpriteScaleInMaze) 
@@ -90,7 +93,6 @@ class Maze:
                         continue
                     # Define temporary list to store every character in line
                     LineData = list()
-                    OtherLayerData = list()
                     # For each character in Line
                     for Char in Line:
                         # Store character in LineData list (except new line \n)
@@ -101,12 +103,8 @@ class Maze:
                                 # If an element was found
                                 # append element
                                 LineData.append(CurrentElement)
-                                OtherLayerData.append(None)
                     # Store LineData list in MapLayer list
                     cls.MapLayer.append(LineData)
-                    # Store blank data list in Object and Character Layers lists
-                    cls.ObjectLayer.append(OtherLayerData)
-                    cls.CharacterLayer.append(OtherLayerData)
 
         except OSError:
             # If there is an OSError exception

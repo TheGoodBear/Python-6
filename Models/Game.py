@@ -2,6 +2,7 @@
     Class
 """
 
+import time
 import pygame
 import Utilities.GlobalVariables as GV
 import Utilities.Utilities as Util
@@ -79,18 +80,23 @@ class Game:
 
         # Show initial message
         Message = \
-"""\nBonjour {0},
-\nton objectif est de sortir du labyrinthe.
-\nPour cela il te faudra trouver la sortie
-et avoir collecté les objets nécessaires
-à l'ouverture de la porte. 
+"""\nBonjour {0}.
+\nTu viens de pénétrer dans une grotte
+mais l'entrée s'est effondrée derrière toi.
+\nTu dois maintenant sortir du labyrinthe...
+\nIl te faudra pour cela avoir collecté les
+objets nécessaires à l'ouverture de la porte. 
 \nDéplace toi grâce aux flèches du clavier
 ou appuie sur ESC pour quitter le jeu,
-et perdre...
+et mourrir de fin dans le labyrinthe...
 \nBonne chance."""
         Message = Message.format(cls.Player.Name)
-        print(Message)
-        Util.Write(Message)
+        # print(Message)
+        Util.Write(Message, FontSize = 14)
+        # play sounds
+        Util.ManageSound("CaveIn", Repeat = 3)
+        time.sleep(1)
+        Util.ManageSound("Ready")
 
         # Game loop
 
