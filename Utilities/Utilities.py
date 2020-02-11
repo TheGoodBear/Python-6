@@ -63,8 +63,8 @@ def GetImage(ImageName: str):
         # create generic path for all OS
         ImagePath = GV.GraphicResourcePath + ImageName + GV.ImageExtension
         ImagePath = ImagePath.replace('/', os.sep).replace('\\', os.sep)
-        # load image
-        MyImage = pygame.image.load(ImagePath)
+        # load image and convert it to increase performance while keeping transparency (_alpha)
+        MyImage = pygame.image.load(ImagePath).convert_alpha()
         # store it in library
         GV.ImageLibrary[ImageName] = MyImage
 

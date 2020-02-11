@@ -104,7 +104,7 @@ et mourrir de fin dans le labyrinthe...
         #ActionSpeed: int = GV.Clock.tick(GV.FPS) // 1000 
         # variable for end of game
         EndOfGame: bool = False
-        
+       
         # do this until end of game is triggered
         while not EndOfGame:
 

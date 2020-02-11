@@ -9,7 +9,14 @@
     - IDE : NA
 
     - Architecture logicielle :
-        - Module externe PyGame (https://www.pygame.org)
+        - Python :
+            - compréhensions de listes
+            - générateurs
+        - Module externe PyGame (https://www.pygame.org) :
+            - Création d'une vue
+            - Gestion des évènements asynchrones
+            - Affichage et déplacement d'images
+            - Lecture de sons
 
     - Données : NA
 
