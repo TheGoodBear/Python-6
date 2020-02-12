@@ -4,6 +4,9 @@ Contexte
 Améliorer le petit jeu de labyrinthe :
 
 1) Implémenter la librairie graphique PyGame (https://www.pygame.org)
+2) Utiliser au maximum les bonnes pratiques de Programmation Orientée Objet
+3) Utiliser au maximum (mais à bon escient) les capacités avancées de Python 
+    (compréhension de liste, générateurs, dictionnaires/tuples/liste, sérialisation, ...)
 
 Consignes :
 - Tous les nommages (méthodes, propriétés, variables, classes, etc.) doivent être en anglais
