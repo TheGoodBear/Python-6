@@ -1,7 +1,10 @@
+# coding: utf-8
+
 """
     Class
 """
 
+# imports
 import sys
 import random
 import pygame
@@ -9,6 +12,7 @@ import Utilities.GlobalVariables as GV
 import Utilities.Utilities as Util
 from Models.MazeElement import MazeElement
 
+# code
 class Maze:
     """
         Used to manage the maze

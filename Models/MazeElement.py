@@ -1,11 +1,15 @@
+# coding: utf-8
+
 """
     Class
 """
 
+# imports
 import sys
 import json
 import Utilities.Utilities as Util
 
+# code
 class MazeElement:
     """
         Used to manage elements compozing the maze

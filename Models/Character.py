@@ -1,7 +1,10 @@
+# coding: utf-8
+
 """
     Class
 """
 
+# imports
 import sys
 import json
 import pygame
@@ -9,6 +12,7 @@ import Utilities.GlobalVariables as GV
 import Utilities.Utilities as Util
 from Models.Maze import Maze
 
+# code
 class Character:
     """
         Used to manage the characters

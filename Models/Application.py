@@ -1,11 +1,15 @@
+# coding: utf-8
+
 """
     Class
 """
 
+# imports
 import pygame
 import Utilities.GlobalVariables as GV
 from Models.Game import Game
 
+# code
 class Application:
     """
         Used to manage the application

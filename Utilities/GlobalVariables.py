@@ -1,4 +1,8 @@
-# Global variables for application
+# coding: utf-8
+
+"""
+    Global variables for application
+"""
 
 # Screen
 Screen = None

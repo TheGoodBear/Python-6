@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """
     Maze v1.3
     PyGame
@@ -10,5 +12,12 @@ from Models.Application import Application
 # Application
 # -----------
 
+def Main():
+    """
+    """
+    Application.Start()
+    
+
 # Application start
-Application.Start()
+if __name__ == "__main__":
+    Main()

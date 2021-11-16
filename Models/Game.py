@@ -1,7 +1,10 @@
+# coding: utf-8
+
 """
     Class
 """
 
+# imports
 import time
 import pygame
 import Utilities.GlobalVariables as GV
@@ -11,6 +14,7 @@ from Models.Maze import Maze
 from Models.MazeElement import MazeElement
 from Models.ScreenPlaceholder import ScreenPlaceholder
 
+# code
 class Game:
     """
         Utility class used to manage the game
@@ -88,7 +92,7 @@ mais l'entrée s'est effondrée derrière toi.
 objets nécessaires à l'ouverture de la porte. 
 \nDéplace toi grâce aux flèches du clavier
 ou appuie sur ESC pour quitter le jeu,
-et mourrir de fin dans le labyrinthe...
+et mourrir de faim dans le labyrinthe...
 \nBonne chance."""
         Message = Message.format(cls.Player.Name)
         # print(Message)

@@ -1,7 +1,10 @@
+# coding: utf-8
+
 """
     Class
 """
 
+# imports
 import os
 import sys
 import json
@@ -9,6 +12,7 @@ import pygame
 import Utilities.GlobalVariables as GV
 import Utilities.Utilities as Util
 
+# code
 class ScreenPlaceholder:
     """
         Used to manage the screen elements

@@ -1,11 +1,17 @@
-# Usefull methods for application
+# coding: utf-8
 
+""" 
+    Usefull methods for application
+"""
+
+# imports
 import os
 import time
 import pygame
 import Utilities.GlobalVariables as GV
 
 
+# code
 def LoadImages(ImageNames: str) -> list:
     """
         Load images from resources and return them
